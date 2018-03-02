@@ -1,0 +1,43 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"outDir": "dist/",
+		"noEmitHelpers": true,
+		"importHelpers": true,
+		"sourceMap": true,
+		"declaration": false,
+		"alwaysStrict": true,
+		"experimentalDecorators": true,
+		"noImplicitUseStrict": false,
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": false,
+		"strict": true,
+		"baseUrl": ".",
+		"lib": [
+			"es2015",
+			"dom"
+		]
+	},
+	"compilerOptionsNotUsing": {
+		"emitDecoratorMetadata": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"noImplicitAny": true
+	},
+	"exclude": [
+		"node_modules",
+		"public",
+		"dist",
+		"ionic",
+		"tmp",
+		"*.bak",
+		"*.tar.gz",
+		"http/test",
+		"**/*.test.ts",
+		"model/event/**/*.ts"
+	],
+	"excludeNotUsing": []
+}

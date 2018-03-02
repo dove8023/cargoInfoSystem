@@ -1,0 +1,8 @@
+node_modules
+dist
+.idea
+config/config.local.json
+log
+.vscode/
+tmp
+mytest/

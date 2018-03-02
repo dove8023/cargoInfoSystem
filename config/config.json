@@ -1,0 +1,13 @@
+{
+	"appName": "${NAME}",
+	"listen": "4106",
+	"postgres": {
+		"url": "${POSTGRES}",
+		"debug": true
+	},
+	"redis": {
+		"url": "${REDIS}"
+	},
+	"cluster": 4,
+	"port": 8080
+}
