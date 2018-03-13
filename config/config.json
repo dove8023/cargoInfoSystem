@@ -1,6 +1,5 @@
 {
 	"appName": "${NAME}",
-	"listen": "4106",
 	"postgres": {
 		"url": "${POSTGRES}",
 		"debug": true

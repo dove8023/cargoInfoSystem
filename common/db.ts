@@ -8,14 +8,14 @@ import sequelize, { Sequelize } from 'sequelize';
  * @content what is the content of this file. */
 
 export let DB: Sequelize;
-export function init(conn_url: string) {
-    var url = conn_url;
+export function init(conn_url: string, log: boolean = false) {
     var options = {
         timezone: '+08:00',
+        logging: log
     } as any;
-    if (/^postgres:\/\/.*ssl=true/.test(url)) {
+    if (/^postgres:\/\/.*ssl=true/.test(conn_url)) {
         options.dialect = 'postgres';
         options.dialectOptions = { ssl: true };
     }
-    exports.DB = new sequelize(url, options);
+    exports.DB = new sequelize(conn_url, options);
 }

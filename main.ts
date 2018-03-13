@@ -2,13 +2,14 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-02 12:28:15
+ * @Last Modified time: 2018-03-02 22:44:06
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
 import fs = require("fs");
 let config = require("config.local");
 import { init, DB } from "common/db";
+import cache from "common/cache";
 
 process.on('unhandledRejection', (reason: any, p: PromiseLike<any>) => {
     console.error(reason);
@@ -17,16 +18,20 @@ process.on('uncaughtException', function (err) {
     console.error('uncaughtException==>', err.stack ? err.stack : err);
 });
 
-init(config.postgres.url);
+init(config.postgres.url, config.postgres.debug);
 import "modelSql/index";
+
+cache.init(config.redis.url);
 
 import app from "./http";
 const http = require("http");
 
-console.log(1234, config);
-let PORT = '3000';
+let PORT = config.port;
 
 DB.sync({ force: false });
+
+import "model/account/account";
+
 /* 
 import cluster = require("cluster");
 const pkg = require("./package.json");
