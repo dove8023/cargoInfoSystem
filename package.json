@@ -32,6 +32,7 @@
     "config.local": "^1.0.2",
     "connect-timeout": "^1.9.0",
     "express": "^4.16.2",
+    "heapdump": "^0.3.9",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "pg": "^7.4.1",

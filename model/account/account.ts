@@ -17,11 +17,20 @@ class Account {
         });
     }
 
-    find() {
-
+    async find(params: { page?: number, size?: number, mobile?: string, password?: string }) {
+        let { page = 0, size = 20, mobile, password } = params;
+        return await DB.models.Account.find({
+            where: {
+                mobile,
+                password
+            },
+            limit: size,
+            offset: page * size
+        });
     }
 
     async add(params: { mobile: string, password: string, [index: string]: any }) {
+        //check if the mobile already have.
         let result = await DB.models.Account.create({
             id: uuid.v1(),
             mobile: params.mobile,

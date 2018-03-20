@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-02 22:44:06
+ * @Last Modified time: 2018-03-20 11:18:24
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
@@ -58,7 +58,6 @@ if (cluster.isWorker) {
 } */
 
 
-//开启http服务
 let server = http.createServer(app);
 server.on('listening', function () {
     if (!/^\d+$/.test(PORT)) {
