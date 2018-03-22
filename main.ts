@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-20 11:18:24
+ * @Last Modified time: 2018-03-21 20:31:31
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
@@ -12,7 +12,7 @@ import { init, DB } from "common/db";
 import cache from "common/cache";
 
 process.on('unhandledRejection', (reason: any, p: PromiseLike<any>) => {
-    console.error(reason);
+    console.error("unhandledRejection", reason);
 });
 process.on('uncaughtException', function (err) {
     console.error('uncaughtException==>', err.stack ? err.stack : err);
@@ -30,7 +30,7 @@ let PORT = config.port;
 
 DB.sync({ force: false });
 
-import "model/account/account";
+// import "model/account/account";
 
 /* 
 import cluster = require("cluster");

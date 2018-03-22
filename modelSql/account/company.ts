@@ -6,36 +6,24 @@
  * @content what is the content of this file. */
 
 import sequelize = require("sequelize");
-import { DB } from "common/db";
+import { DB } from 'common/db';
 
 let columns = {
     id: {
         type: sequelize.UUID,
         primaryKey: true,
     },
-    mobile: {
-        type: sequelize.STRING(50),
-        allowNull: false,
-    },
-    password: {
-        type: sequelize.STRING,
-        allowNull: false,
-    },
     name: {
         type: sequelize.STRING(50),
-        allowNull: true,
+        allowNull: false,
     },
-    recentlyStaffId: {
+    createUser: {
         type: sequelize.UUID,
-        allowNull: true,
+        allowNull: false,
     },
-    sex: {
-        type: sequelize.CHAR(1),
-        allowNull: true,
-    },
-    age: {
+    staffNum: {
         type: sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
     },
     deletedAt: {
         type: sequelize.DATE,
@@ -46,16 +34,16 @@ let columns = {
 let options = {
     indexes: [
         {
-            name: "mobile",
-            fields: ['mobile']
+            name: "name",
+            fields: ['name']
         },
         {
-            name: "password",
-            fields: ['password']
+            name: "createUser",
+            fields: ['createUser']
         }
     ],
     underscored: true,
     timestamps: true,
-    tableName: 'account'
+    tableName: 'company'
 }
-DB.models.account = DB.define('Account', columns, options);
+DB.models.company = DB.define('Company', columns, options);

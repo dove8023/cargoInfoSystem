@@ -6,36 +6,36 @@
  * @content what is the content of this file. */
 
 import sequelize = require("sequelize");
-import { DB } from "common/db";
+import { DB } from 'common/db';
 
 let columns = {
     id: {
         type: sequelize.UUID,
         primaryKey: true,
     },
-    mobile: {
-        type: sequelize.STRING(50),
-        allowNull: false,
-    },
-    password: {
-        type: sequelize.STRING,
-        allowNull: false,
-    },
     name: {
         type: sequelize.STRING(50),
-        allowNull: true,
-    },
-    recentlyStaffId: {
-        type: sequelize.UUID,
-        allowNull: true,
+        allowNull: false,
     },
     sex: {
-        type: sequelize.CHAR(1),
+        type: sequelize.INTEGER,
         allowNull: true,
     },
-    age: {
+    avatar: {
+        type: sequelize.STRING,
+        allowNull: true,
+    },
+    roleId: {
         type: sequelize.INTEGER,
-        allowNull: true
+        allowNull: false
+    },
+    companyId: {
+        type: sequelize.UUID,
+        allowNull: false
+    },
+    accountId: {
+        type: sequelize.UUID,
+        allowNull: false
     },
     deletedAt: {
         type: sequelize.DATE,
@@ -46,16 +46,16 @@ let columns = {
 let options = {
     indexes: [
         {
-            name: "mobile",
-            fields: ['mobile']
+            name: "companyId",
+            fields: ['companyId']
         },
         {
-            name: "password",
-            fields: ['password']
+            name: "accountId",
+            fields: ['accountId']
         }
     ],
     underscored: true,
     timestamps: true,
-    tableName: 'account'
+    tableName: 'staff'
 }
-DB.models.account = DB.define('Account', columns, options);
+DB.models.staff = DB.define('Staff', columns, options);
