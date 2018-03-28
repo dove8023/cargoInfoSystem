@@ -11,12 +11,12 @@ import * as moment from "moment";
 import router from "./auth";
 
 let app = new koa();
-app.use(koaBody({
-    jsonLimit: '1mb'
-}));
+
 
 app.use(async (ctx, next) => {
     try {
+        //default type json.
+        ctx.response.type = "json";
         await next();
     } catch (err) {
         ctx.response.status = err.status || err.statusCode || 500;
@@ -25,6 +25,10 @@ app.use(async (ctx, next) => {
         console.error(err);
     }
 });
+
+app.use(koaBody({
+    jsonLimit: '8mb'
+}));
 
 // x-response-time
 app.use(async (ctx, next) => {

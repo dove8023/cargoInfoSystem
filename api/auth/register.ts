@@ -57,4 +57,5 @@ class Register {
     }
 }
 
-export let register = new Register();
+let register = new Register();
+export default register;
