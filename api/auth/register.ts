@@ -5,12 +5,16 @@
  * @Last Modified time: 2018-03-21 23:24:13
  * @content what is the content of this file. */
 
-import { account, company, staff } from "model";
+import { account, company, staff, Role } from "model";
+import * as uuid from "uuid";
 
 
 class Register {
     async register(params: { mobile: string; password: string; authCode: string; username: string; companyName: string }) {
         let { mobile, password, authCode, username, companyName } = params;
+        if (!mobile || !password || !username || !companyName) {
+            throw new Error("注册参数不完善");
+        }
 
         /* 检查验证码 */
 
@@ -37,8 +41,9 @@ class Register {
         });
         /* create staff */
         let registStaff = await staff.model.create({
+            id: uuid.v1(),
             name: username,
-            roleId: 1,
+            roleId: Role.OWN,
             companyId: registCompany.id,
             accountId: registAccount.id
         });
@@ -46,7 +51,7 @@ class Register {
         /* 企业注册成功 */
         return {
             code: 0,
-            msg: "注册成功",
+            msg: "注册成功，请立即登陆",
             data: null
         }
     }

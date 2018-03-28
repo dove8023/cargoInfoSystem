@@ -9,10 +9,10 @@ import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from 'sequelize';
 
-export interface ROLE {
-    OWN: 1,
-    MANGER: 2,
-    COMMON: 3
+export enum Role {
+    OWN = 1,
+    MANGER = 2,
+    COMMON = 3
 }
 
 class Staff {

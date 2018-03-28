@@ -38,6 +38,7 @@ class Company {
 
     async add(params: { createUser: string, name: string, [index: string]: any }) {
         let { createUser, name } = params;
+
         let company = await this.model.findOne({
             where: {
                 createUser

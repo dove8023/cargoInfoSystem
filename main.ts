@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 20:31:31
+ * @Last Modified time: 2018-03-23 16:29:24
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
@@ -12,10 +12,10 @@ import { init, DB } from "common/db";
 import cache from "common/cache";
 
 process.on('unhandledRejection', (reason: any, p: PromiseLike<any>) => {
-    console.error("unhandledRejection", reason);
+    console.error("1111 unhandledRejection", reason);
 });
 process.on('uncaughtException', function (err) {
-    console.error('uncaughtException==>', err.stack ? err.stack : err);
+    console.error('2222 uncaughtException==>', err.stack ? err.stack : err);
 });
 
 init(config.postgres.url, config.postgres.debug);
@@ -58,7 +58,8 @@ if (cluster.isWorker) {
 } */
 
 
-let server = http.createServer(app);
+// let server = http.createServer(app);
+let server = app;
 server.on('listening', function () {
     if (!/^\d+$/.test(PORT)) {
         fs.chmodSync(PORT, '777')

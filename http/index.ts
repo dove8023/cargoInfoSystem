@@ -1,42 +1,49 @@
 /*
  * @Author: Mr.He 
- * @Date: 2018-03-02 10:04:30 
+ * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 23:24:38
+ * @Last Modified time: 2018-03-23 18:00:08
  * @content what is the content of this file. */
 
-let express = require("express");
-let conn_timeout = require("connect-timeout");
-let bodyParser = require("body-parser");
-let moment = require("moment");
-import { router } from "./auth";
+import koa = require("koa");
+import koaBody = require("koa-body");
+import * as moment from "moment";
+import router from "./auth";
 
-let app = express();
-app.use(conn_timeout("6s"));
-app.use(bodyParser.json({ limit: '8mb' }));
-app.use(bodyParser.urlencoded({ limit: '8mb', extended: true }));
-app.use(usingTime);
+let app = new koa();
+app.use(koaBody({
+    jsonLimit: '1mb'
+}));
 
-app.use(router);
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.response.status = err.status || err.statusCode || 500;
+        ctx.response.type = "text";
+        ctx.response.body = err.message || err;
+        console.error(err);
+    }
+});
 
+// x-response-time
+app.use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    ctx.set('X-Response-Time', `${ms}ms`);
+});
 
-app.get("/test", (req: any, res: any, next: Function) => {
-    res.send("test ok");
+// logger
+app.use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    console.log(`${moment().format()} ${ctx.method} ${ctx.url} ${ctx.status}--- ${ms}ms`);
 });
 
 
 
-
-function usingTime(req: any, res: any, next: any) {
-    req.enterTime = Date.now();
-    res.json = function (data: object) {
-        res.setHeader('Content-Type', 'application/json');
-        res.write(JSON.stringify(data));
-        console.info(moment().format("YYYY-MM-DD hh:mm:ss"), req.method, req.url, process.title, (Date.now() - req.enterTime) / 1000, "s");
-        res.end();
-    }
-
-    next();
-}
+app.use(router.routes());
 
 export default app;
