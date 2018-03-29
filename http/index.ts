@@ -2,18 +2,20 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-23 18:00:08
+ * @Last Modified time: 2018-03-28 11:45:03
  * @content what is the content of this file. */
 
-import koa = require("koa");
+import * as Koa from "koa"
+
 import koaBody = require("koa-body");
 import * as moment from "moment";
 import router from "./auth";
+import login from "api/auth/login";
 
-let app = new koa();
+let app = new Koa();
 
 
-app.use(async (ctx, next) => {
+app.use(async (ctx: Koa.Context, next: Function) => {
     try {
         //default type json.
         ctx.response.type = "json";
@@ -31,7 +33,7 @@ app.use(koaBody({
 }));
 
 // x-response-time
-app.use(async (ctx, next) => {
+app.use(async (ctx: Koa.Context, next: Function) => {
     const start = Date.now();
     await next();
     const ms = Date.now() - start;
@@ -39,14 +41,18 @@ app.use(async (ctx, next) => {
 });
 
 // logger
-app.use(async (ctx, next) => {
+app.use(async (ctx: Koa.Context, next: Function) => {
     const start = Date.now();
     await next();
     const ms = Date.now() - start;
     console.log(`${moment().format()} ${ctx.method} ${ctx.url} ${ctx.status}--- ${ms}ms`);
 });
 
-
+// deal login user
+app.use(async (ctx: Koa.Context, next: Function) => {
+    await login.loginCheck(ctx);
+    await next();
+});
 
 app.use(router.routes());
 

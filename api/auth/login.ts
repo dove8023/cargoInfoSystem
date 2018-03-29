@@ -1,13 +1,14 @@
 /*
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:40:37 
- * @Last Modified by:   Mr.He 
- * @Last Modified time: 2018-03-02 22:40:37 
+ * @Last Modified by: Mr.He
+ * @Last Modified time: 2018-03-29 08:36:25
  * @content login. */
 
 import * as md5 from "md5";
 import { account, staff, company } from "model";
 import cache from "common/cache";
+import * as Koa from 'koa';
 
 class Login {
     async login(params: { mobile: string, password: string }) {
@@ -79,8 +80,29 @@ class Login {
     }
 
     getToken(staffId: string, companyId: string) {
-        let str = [...arguments, Date.now()].join(":")
+        let str = [...arguments, Date.now()].join(":");
         return md5(str);
+    }
+
+    async loginCheck(ctx: Koa.Context) {
+        let allowUrls = ["/auth/login", "/auth/register", "/test"];
+        let url = ctx.url;
+        if (allowUrls.indexOf(url) > -1) {
+            return true;
+        }
+
+        let { token } = ctx.header;
+        if (!token) {
+            throw new Error("token dose not exist.");
+        }
+        let users = await cache.read(token);
+        if (!users) {
+            throw new Error("token has expired.");
+        }
+
+        ctx.state = {
+            users
+        }
     }
 }
 

@@ -12,9 +12,9 @@
 		"experimentalDecorators": true,
 		"noImplicitUseStrict": false,
 		"allowSyntheticDefaultImports": true,
-		"noImplicitAny": false,
+		"noImplicitAny": true,
 		"noImplicitThis": true,
-		"noUnusedLocals": false,
+		"noUnusedLocals": true,
 		"strict": true,
 		"baseUrl": ".",
 		"lib": [

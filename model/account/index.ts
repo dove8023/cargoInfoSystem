@@ -80,12 +80,3 @@ class Account {
 }
 
 export let account = new Account(DB.models.Account as Model<any, any>);
-
-// setTimeout(async () => {
-//     let result = await account.add({
-//         mobile: '15210501234',
-//         password: '123456'
-//     });
-//     console.log(123, result);
-//     let accountOne = await DB.models.Account.findOne();
-// }, 3000);
