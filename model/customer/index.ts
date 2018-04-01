@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-28 11:08:01 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-29 09:05:58
+ * @Last Modified time: 2018-04-01 11:56:06
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -11,7 +11,7 @@ import { Model } from "sequelize";
 import { Context } from 'koa';
 import * as moment from 'moment';
 
-export class Types {
+export class Customer {
     model: Model<any, any>;
     constructor(model: Model<any, any>) {
         this.model = model;
@@ -26,7 +26,7 @@ export class Types {
                 companyId,
                 deletedAt: null
             }
-        })
+        });
     }
 
     async find(ctx: Context) {
@@ -38,15 +38,16 @@ export class Types {
                 companyId,
                 deletedAt: null
             },
+            order: [["created_at", "desc"]],
             offset: page * limit,
             limit
         });
     }
 
     async post(ctx: Context) {
-        let { name, price } = ctx.request.body;
-        if (!name || !price) {
-            throw new Error("types add, need name and price");
+        let { name, address, mobile } = ctx.request.body;
+        if (!name) {
+            throw new Error("customer add, need name.");
         }
         let companyId = ctx.state.users.company.id;
         let operaterId = ctx.state.users.staff.id;
@@ -56,40 +57,32 @@ export class Types {
             companyId,
             operaterId,
             name,
-            price,
-            hisPrice: [{
-                price,
-                time: moment().format()
-            }]
+            address,
+            mobile
         });
     }
 
     async put(ctx: Context) {
         let { id } = ctx.params;
         let companyId = ctx.state.users.company.id;
-        let { name, price } = ctx.request.body;
-        if (!price) {
-            throw new Error("types update, need price");
+        let { name, address, mobile } = ctx.request.body;
+
+        let _customer = await this.model.findById(id);
+        if (!_customer) {
+            throw new Error("customer record does not exist.");
+        }
+        if (_customer.companyId != companyId) {
+            throw new Error("customer, Permission denied.");
         }
 
-        let _types = await this.model.findById(id);
-        if (!_types) {
-            throw new Error("types record does not exist.");
-        }
-        if (_types.companyId != companyId) {
-            throw new Error("types, Permission denied.");
-        }
-
-        let hisPrice = _types.hisPrice;
-        hisPrice.push({
-            price: _types.price,
-            time: moment().format()
-        });
+        name = name || _customer.name;
+        address = address || _customer.address;
+        mobile = mobile || _customer.mobile;
 
         return await this.model.update({
             name,
-            price,
-            hisPrice,
+            address,
+            mobile,
         }, {
                 where: {
                     id
@@ -100,9 +93,12 @@ export class Types {
     async delete(ctx: Context) {
         let { id } = ctx.params;
         let companyId = ctx.state.users.company.id;
-        let _types = await this.model.findById(id);
-        if (!_types) {
-            throw new Error("types record does not exist.");
+        let _customer = await this.model.findById(id);
+        if (!_customer) {
+            throw new Error("customer record does not exist.");
+        }
+        if (_customer.companyId != companyId) {
+            throw new Error("customer, Permission denied.");
         }
 
         return await this.model.update({
@@ -115,4 +111,4 @@ export class Types {
     }
 }
 
-export let types = new Types(DB.models.types as Model<any, any>);
+export let customer = new Customer(DB.models.customer as Model<any, any>);

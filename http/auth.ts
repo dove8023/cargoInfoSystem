@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 22:52:23 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-28 15:48:31
+ * @Last Modified time: 2018-04-01 11:39:46
  * @content what is the content of this file. */
 
 import register from "api/auth/register";
@@ -22,7 +22,9 @@ router.post("/auth/login", async (ctx, next) => {
 });
 
 
-import { TypesFn } from "./types";
-TypesFn(router);
+import { TypesRouter } from "./types";
+import { CustomerRouter } from "./customer";
+TypesRouter(router);
+CustomerRouter(router);
 
 export default router;

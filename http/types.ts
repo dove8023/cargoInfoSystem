@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-28 15:29:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-29 08:33:24
+ * @Last Modified time: 2018-04-01 11:38:46
  * @content what is the content of this file. */
 
 import Router from "koa-router";
@@ -11,7 +11,7 @@ import { account, staff, company, types } from "model";
 import * as uuid from 'uuid';
 
 
-export function TypesFn(router: Router) {
+export function TypesRouter(router: Router) {
     router.get("/test", async (ctx: Context, next: Function) => {
         ctx.response.type = "text";
         ctx.response.body = "test, just";
@@ -62,6 +62,4 @@ export function TypesFn(router: Router) {
             data: result
         }
     });
-
-
 }
