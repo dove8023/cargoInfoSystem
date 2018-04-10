@@ -95,13 +95,13 @@ class Login {
         if (!token) {
             throw new Error("token dose not exist.");
         }
-        let users = await cache.read(token);
-        if (!users) {
+        let session = await cache.read(token);
+        if (!session) {
             throw new Error("token has expired.");
         }
 
         ctx.state = {
-            users
+            session
         }
     }
 }

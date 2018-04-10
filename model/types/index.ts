@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-28 11:08:01 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-29 09:05:58
+ * @Last Modified time: 2018-04-06 23:35:09
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -10,6 +10,7 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { Context } from 'koa';
 import * as moment from 'moment';
+import { UserInfo } from '../interface';
 
 export class Types {
     model: Model<any, any>;
@@ -17,21 +18,19 @@ export class Types {
         this.model = model;
     }
 
-    async get(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
+    async get(id: string, userInfo: UserInfo) {
         return await this.model.findOne({
             where: {
                 id,
-                companyId,
+                companyId: userInfo.company.id,
                 deletedAt: null
             }
         })
     }
 
-    async find(ctx: Context) {
-        let companyId = ctx.state.users.company.id;
-        let { page = 0 } = ctx.request.query;
+    async find(where: any, userInfo: UserInfo) {
+        let companyId = userInfo.company.id;
+        let { page = 0 } = where;
         let limit = 20; //不允许接收外面转入值
         return await this.model.findAndCountAll({
             where: {

@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-01 12:09:49 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-01 17:46:11
+ * @Last Modified time: 2018-04-03 23:01:03
  * @content what is the content of this file. */
 
 
@@ -28,7 +28,7 @@ let columns = {
         type: sequelize.UUID,
         allowNull: false,
     },
-    price: {
+    total: {
         type: sequelize.NUMERIC,
         allowNull: false,
     },

@@ -28,10 +28,8 @@
   "homepage": "https://github.com/dove8023/cargoInfoSystem#readme",
   "dependencies": {
     "app-module-path": "^2.2.0",
-    "body-parser": "^1.18.2",
     "config.local": "^1.0.2",
-    "connect-timeout": "^1.9.0",
-    "express": "^4.16.2",
+    "continuation-local-storage": "^3.2.1",
     "heapdump": "^0.3.9",
     "koa": "^2.5.0",
     "koa-body": "^2.5.0",
@@ -50,7 +48,6 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "@types/express": "^4.11.1",
     "@types/koa": "^2.0.44",
     "@types/koa-router": "^7.0.27",
     "@types/md5": "^2.1.32",

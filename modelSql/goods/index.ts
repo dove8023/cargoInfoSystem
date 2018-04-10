@@ -34,6 +34,7 @@ let columns = {
         type: sequelize.NUMERIC,
         allowNull: false,
     },
+    // 金额
     amount: {
         type: sequelize.NUMERIC,
         allowNull: false,

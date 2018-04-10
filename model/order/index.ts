@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-01 17:48:06 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-01 20:59:40
+ * @Last Modified time: 2018-04-06 23:40:53
  * @content what is the content of this file. */
 
 
@@ -11,6 +11,8 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { Context } from 'koa';
 import * as moment from 'moment';
+import { UserInfo } from 'model/interface';
+import { getNamespace } from "continuation-local-storage";
 
 export class Order {
     model: Model<any, any>;
@@ -45,27 +47,28 @@ export class Order {
         });
     }
 
-    async post(ctx: Context) {
-        let { customerId, price } = ctx.request.body;
-        if (!price || !customerId) {
-            throw new Error("order add, total price and customerId need.");
+    async post(params: { customerId: string; total: number }) {
+        let userInfo = getNamespace("session").get("session");
+        let { customerId, total } = params;
+        if (!total || !customerId) {
+            throw new Error("order add, total total and customerId need.");
         }
-        let companyId = ctx.state.users.company.id;
-        let operaterId = ctx.state.users.staff.id;
+        let companyId = userInfo.company.id;
+        let operaterId = userInfo.staff.id;
 
         return await this.model.create({
             id: uuid.v1(),
             companyId,
             operaterId,
             customerId,
-            price
+            total
         });
     }
 
     async put(ctx: Context) {
         let { id } = ctx.params;
         let companyId = ctx.state.users.company.id;
-        let { customerId, price } = ctx.request.body;
+        let { customerId, total } = ctx.request.body;
 
         let _customer = await this.model.findById(id);
         if (!_customer) {
@@ -76,11 +79,11 @@ export class Order {
         }
 
         customerId = customerId || _customer.customerId;
-        price = price || _customer.price;
+        total = total || _customer.total;
 
         return await this.model.update({
             customerId,
-            price,
+            total,
         }, {
                 where: {
                     id

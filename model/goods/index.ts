@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-01 21:21:24 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-01 21:21:50
+ * @Last Modified time: 2018-04-06 23:46:39
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -10,6 +10,10 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { Context } from 'koa';
 import * as moment from 'moment';
+import { types } from "model";
+import { UserInfo } from '../interface';
+import { getNamespace } from 'continuation-local-storage';
+import { company } from '../company/index';
 
 export class Goods {
     model: Model<any, any>;
@@ -17,13 +21,12 @@ export class Goods {
         this.model = model;
     }
 
-    async get(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
+    async get(id: string) {
+        let userInfo = getNamespace("session").get("session");
         return await this.model.findOne({
             where: {
                 id,
-                companyId,
+                companyId: userInfo.company.id,
                 deletedAt: null
             }
         });
@@ -44,23 +47,35 @@ export class Goods {
         });
     }
 
-    async post(ctx: Context) {
-        let { customerId, price } = ctx.request.body;
-        if (!price || !customerId) {
-            throw new Error("order add, total price and customerId need.");
+    async post(params: any) {
+        let userInfo: UserInfo = getNamespace("session").get("session");
+
+        let { customerId, typeId, price, amount, weight } = params;
+        if (!price || !customerId || price < 0 || amount < 0 || weight < 0) {
+            throw new Error("Goods add, total price and customerId need.");
         }
-        let companyId = ctx.state.users.company.id;
-        let operaterId = ctx.state.users.staff.id;
+        let companyId = userInfo.company.id;
+        let operaterId = userInfo.staff.id;
+
+        let _types = await types.get(typeId, userInfo);
+        if (!_types) {
+            throw new Error("Goods add, typeId not right");
+        }
+
 
         return await this.model.create({
             id: uuid.v1(),
             companyId,
             operaterId,
             customerId,
-            price
+            typeId,
+            price,
+            amount,
+            weight
         });
     }
 
+    /* not use. */
     async put(ctx: Context) {
         let { id } = ctx.params;
         let companyId = ctx.state.users.company.id;
@@ -68,10 +83,10 @@ export class Goods {
 
         let _customer = await this.model.findById(id);
         if (!_customer) {
-            throw new Error("order record does not exist.");
+            throw new Error("Goods record does not exist.");
         }
         if (_customer.companyId != companyId) {
-            throw new Error("order, Permission denied.");
+            throw new Error("Goods, Permission denied.");
         }
 
         customerId = customerId || _customer.customerId;
@@ -92,10 +107,10 @@ export class Goods {
         let companyId = ctx.state.users.company.id;
         let _customer = await this.model.findById(id);
         if (!_customer) {
-            throw new Error("order record does not exist.");
+            throw new Error("Goods record does not exist.");
         }
         if (_customer.companyId != companyId) {
-            throw new Error("order, Permission denied.");
+            throw new Error("Goods, Permission denied.");
         }
 
         return await this.model.update({

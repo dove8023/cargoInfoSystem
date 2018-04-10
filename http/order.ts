@@ -10,6 +10,7 @@ import Router from "koa-router";
 import { Context } from 'koa';
 import { account, staff, company, order } from "model";
 import * as uuid from 'uuid';
+import createOrder from "api/order/createOrder";
 
 
 let apiModule = order;
@@ -34,7 +35,7 @@ export function OrderRouter(router: Router) {
     });
 
     router.post("/order", async (ctx: Context, next: Function) => {
-        let result = await apiModule.post(ctx);
+        let result = await apiModule.post(ctx.request.body);
         ctx.response.body = {
             code: result ? 0 : -1,
             msg: result ? "Order添加成功" : "Order添加失败",
@@ -57,6 +58,17 @@ export function OrderRouter(router: Router) {
             code: result ? 0 : -1,
             msg: result ? "Order删除成功" : "Order删除失败",
             data: result
+        }
+    });
+
+    router.post("/createOrder", async (ctx: Context, next: Function) => {
+        let result = await createOrder.add(ctx.request.body);
+        ctx.response.body = {
+            code: 0,
+            msg: "订单创建成功",
+            data: {
+                orderId: result
+            }
         }
     });
 }

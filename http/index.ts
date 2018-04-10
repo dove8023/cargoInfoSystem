@@ -2,18 +2,16 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-28 11:45:03
+ * @Last Modified time: 2018-04-09 07:27:00
  * @content what is the content of this file. */
 
-import * as Koa from "koa"
-
+import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
 import router from "./auth";
 import login from "api/auth/login";
 
 let app = new Koa();
-
 
 app.use(async (ctx: Koa.Context, next: Function) => {
     try {
@@ -48,12 +46,20 @@ app.use(async (ctx: Koa.Context, next: Function) => {
     console.log(`${moment().format()} ${ctx.method} ${ctx.url} ${ctx.status}--- ${ms}ms`);
 });
 
+let session = require('continuation-local-storage').createNamespace("session");
+
 // deal login user
 app.use(async (ctx: Koa.Context, next: Function) => {
     await login.loginCheck(ctx);
-    await next();
+    return new Promise((resolve, reject) => {
+        session.run(async () => {
+            if (Object.keys(ctx.state).length) {
+                session.set("session", ctx.state.session);
+            }
+            resolve(next());
+        });
+    });
 });
-
 app.use(router.routes());
 
 export default app;

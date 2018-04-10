@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-23 16:29:24
+ * @Last Modified time: 2018-04-07 00:43:50
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
@@ -57,9 +57,7 @@ if (cluster.isWorker) {
     process.title = `${config.appName || pkg.name}-worker`;
 } */
 
-
-// let server = http.createServer(app);
-let server = app;
+let server = http.createServer(app.callback());
 server.on('listening', function () {
     if (!/^\d+$/.test(PORT)) {
         fs.chmodSync(PORT, '777')

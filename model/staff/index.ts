@@ -2,12 +2,13 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 16:25:11 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 19:22:46
+ * @Last Modified time: 2018-04-09 00:29:12
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from 'sequelize';
+import { getNamespace } from "continuation-local-storage";
 
 export enum Role {
     OWN = 1,
@@ -31,6 +32,9 @@ class Staff {
 
     async find(params: { page?: number, size?: number, companyId: string, [index: string]: any }) {
         let { page = 0, size = 20, companyId } = params;
+
+        let session = getNamespace('session');
+        console.log("staff find:  ", session);
         let where = {
             companyId
         };
