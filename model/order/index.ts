@@ -13,38 +13,10 @@ import { Context } from 'koa';
 import * as moment from 'moment';
 import { UserInfo } from 'model/interface';
 import { getNamespace } from "continuation-local-storage";
-
-export class Order {
-    model: Model<any, any>;
+import { ModelBase } from "common/model"
+export class Order extends ModelBase {
     constructor(model: Model<any, any>) {
-        this.model = model;
-    }
-
-    async get(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
-        return await this.model.findOne({
-            where: {
-                id,
-                companyId,
-                deletedAt: null
-            }
-        });
-    }
-
-    async find(ctx: Context) {
-        let companyId = ctx.state.users.company.id;
-        let { page = 0 } = ctx.request.query;
-        let limit = 20; //不允许接收外面转入值
-        return await this.model.findAndCountAll({
-            where: {
-                companyId,
-                deletedAt: null
-            },
-            order: [["created_at", "desc"]],
-            offset: page * limit,
-            limit
-        });
+        super(model);
     }
 
     async post(params: { customerId: string; total: number }) {
@@ -63,52 +35,6 @@ export class Order {
             customerId,
             total
         });
-    }
-
-    async put(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
-        let { customerId, total } = ctx.request.body;
-
-        let _customer = await this.model.findById(id);
-        if (!_customer) {
-            throw new Error("order record does not exist.");
-        }
-        if (_customer.companyId != companyId) {
-            throw new Error("order, Permission denied.");
-        }
-
-        customerId = customerId || _customer.customerId;
-        total = total || _customer.total;
-
-        return await this.model.update({
-            customerId,
-            total,
-        }, {
-                where: {
-                    id
-                }
-            });
-    }
-
-    async delete(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
-        let _customer = await this.model.findById(id);
-        if (!_customer) {
-            throw new Error("order record does not exist.");
-        }
-        if (_customer.companyId != companyId) {
-            throw new Error("order, Permission denied.");
-        }
-
-        return await this.model.update({
-            deletedAt: moment().format()
-        }, {
-                where: {
-                    id
-                }
-            });
     }
 }
 

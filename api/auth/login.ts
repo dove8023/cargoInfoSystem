@@ -85,7 +85,7 @@ class Login {
     }
 
     async loginCheck(ctx: Koa.Context) {
-        let allowUrls = ["/auth/login", "/auth/register", "/test"];
+        let allowUrls = ["/auth/login", "/auth/register", "/test", "/favicon.ico"];
         let url = ctx.url;
         if (allowUrls.indexOf(url) > -1) {
             return true;
@@ -93,11 +93,11 @@ class Login {
 
         let { token } = ctx.header;
         if (!token) {
-            throw new Error("token dose not exist.");
+            throw new Error("token dose not exist. " + url);
         }
         let session = await cache.read(token);
         if (!session) {
-            throw new Error("token has expired.");
+            throw new Error("token has expired. " + url);
         }
 
         ctx.state = {

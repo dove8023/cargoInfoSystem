@@ -25,8 +25,6 @@ router.post("/auth/login", async (ctx, next) => {
 
 router.get("/test", async (ctx, next) => {
     let session = getNamespace('session');
-
-    console.log(session.get("user").length);
     ctx.response.body = "test result";
 });
 

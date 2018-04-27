@@ -14,37 +14,12 @@ import { types } from "model";
 import { UserInfo } from '../interface';
 import { getNamespace } from 'continuation-local-storage';
 import { company } from '../company/index';
+import { ModelBase } from 'common/model';
 
-export class Goods {
-    model: Model<any, any>;
+
+export class Goods extends ModelBase {
     constructor(model: Model<any, any>) {
-        this.model = model;
-    }
-
-    async get(id: string) {
-        let userInfo = getNamespace("session").get("session");
-        return await this.model.findOne({
-            where: {
-                id,
-                companyId: userInfo.company.id,
-                deletedAt: null
-            }
-        });
-    }
-
-    async find(ctx: Context) {
-        let companyId = ctx.state.users.company.id;
-        let { page = 0 } = ctx.request.query;
-        let limit = 20; //不允许接收外面转入值
-        return await this.model.findAndCountAll({
-            where: {
-                companyId,
-                deletedAt: null
-            },
-            order: [["created_at", "desc"]],
-            offset: page * limit,
-            limit
-        });
+        super(model);
     }
 
     async post(params: any) {
@@ -57,7 +32,7 @@ export class Goods {
         let companyId = userInfo.company.id;
         let operaterId = userInfo.staff.id;
 
-        let _types = await types.get(typeId, userInfo);
+        let _types = await types.get(typeId);
         if (!_types) {
             throw new Error("Goods add, typeId not right");
         }
@@ -73,53 +48,6 @@ export class Goods {
             amount,
             weight
         });
-    }
-
-    /* not use. */
-    async put(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
-        let { customerId, price } = ctx.request.body;
-
-        let _customer = await this.model.findById(id);
-        if (!_customer) {
-            throw new Error("Goods record does not exist.");
-        }
-        if (_customer.companyId != companyId) {
-            throw new Error("Goods, Permission denied.");
-        }
-
-        customerId = customerId || _customer.customerId;
-        price = price || _customer.price;
-
-        return await this.model.update({
-            customerId,
-            price,
-        }, {
-                where: {
-                    id
-                }
-            });
-    }
-
-    async delete(ctx: Context) {
-        let { id } = ctx.params;
-        let companyId = ctx.state.users.company.id;
-        let _customer = await this.model.findById(id);
-        if (!_customer) {
-            throw new Error("Goods record does not exist.");
-        }
-        if (_customer.companyId != companyId) {
-            throw new Error("Goods, Permission denied.");
-        }
-
-        return await this.model.update({
-            deletedAt: moment().format()
-        }, {
-                where: {
-                    id
-                }
-            });
     }
 }
 

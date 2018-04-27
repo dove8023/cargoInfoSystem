@@ -9,6 +9,7 @@ import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from 'sequelize';
 import { getNamespace } from "continuation-local-storage";
+import { ModelBase } from "common/model";
 
 export enum Role {
     OWN = 1,
@@ -16,37 +17,12 @@ export enum Role {
     COMMON = 3
 }
 
-class Staff {
-    public model: Model<any, any>;
+class Staff extends ModelBase {
     constructor(model: Model<any, any>) {
-        this.model = model;
+        super(model);
     }
 
-    async get(id: string) {
-        return await this.model.findOne({
-            where: {
-                id
-            }
-        });
-    }
-
-    async find(params: { page?: number, size?: number, companyId: string, [index: string]: any }) {
-        let { page = 0, size = 20, companyId } = params;
-
-        let session = getNamespace('session');
-        console.log("staff find:  ", session);
-        let where = {
-            companyId
-        };
-
-        return await this.model.find({
-            where,
-            limit: size,
-            offset: page * size
-        });
-    }
-
-    async add(params: { accountId: string, password: string, [index: string]: any }) {
+    async post(params: { accountId: string, password: string, [index: string]: any }) {
         let account = await this.model.findOne({
             where: {
                 mobile: params.mobile
@@ -70,14 +46,6 @@ class Staff {
             age: params.age
         });
         return result;
-    }
-
-    update() {
-
-    }
-
-    delete() {
-
     }
 }
 
