@@ -21,28 +21,29 @@ export class Customer extends ModelBase {
         super(model);
     }
 
-    test() {
-        console.log("test test test");
+    @Router("/ok", "get")
+    ok(ctx: Context, next: Function) {
+        console.log("ok has been");
+        ctx.body = "ok has been called.";
     }
 
-    @Router("ggggg", "oooooo")
-    async post(ctx: Context) {
-        let { name, address, mobile } = ctx.request.body;
-        if (!name) {
-            throw new Error("customer add, need name.");
-        }
-        let companyId = ctx.state.users.company.id;
-        let operaterId = ctx.state.users.staff.id;
+    // async post(ctx: Context) {
+    //     let { name, address, mobile } = ctx.request.body;
+    //     if (!name) {
+    //         throw new Error("customer add, need name.");
+    //     }
+    //     let companyId = ctx.state.users.company.id;
+    //     let operaterId = ctx.state.users.staff.id;
 
-        return await this.model.create({
-            id: uuid.v1(),
-            companyId,
-            operaterId,
-            name,
-            address,
-            mobile
-        });
-    }
+    //     return await this.model.create({
+    //         id: uuid.v1(),
+    //         companyId,
+    //         operaterId,
+    //         name,
+    //         address,
+    //         mobile
+    //     });
+    // }
 
     // async put(ctx: Context) {
     //     let { id } = ctx.params;

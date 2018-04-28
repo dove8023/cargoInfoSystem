@@ -50,7 +50,7 @@ let session = require('continuation-local-storage').createNamespace("session");
 
 // deal login user
 app.use(async (ctx: Koa.Context, next: Function) => {
-    await login.loginCheck(ctx);
+    // await login.loginCheck(ctx);
     return new Promise((resolve, reject) => {
         session.run(async () => {
             if (Object.keys(ctx.state).length) {

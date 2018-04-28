@@ -8,6 +8,7 @@
 import register from "api/auth/register";
 import login from "api/auth/login";
 import Router = require("koa-router");
+import { RegisterRouter } from "common/restful";
 
 let router = new Router();
 
@@ -32,8 +33,9 @@ import { TypesRouter } from "./types";
 import { CustomerRouter } from "./customer";
 import { OrderRouter } from "./order";
 
-TypesRouter(router);
-CustomerRouter(router);
-OrderRouter(router);
+// TypesRouter(router);
+// CustomerRouter(router);
+// OrderRouter(router);
 
+RegisterRouter(router);
 export default router;
