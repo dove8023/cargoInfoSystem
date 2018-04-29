@@ -2,11 +2,11 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:40:37 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-29 08:36:25
+ * @Last Modified time: 2018-04-29 10:03:00
  * @content login. */
 
 import * as md5 from "md5";
-import { account, staff, company } from "model";
+import { Account, Staff, Company } from "model";
 import cache from "common/cache";
 import * as Koa from 'koa';
 
@@ -19,7 +19,7 @@ class Login {
             throw new Error("mobile, password is need.");
         }
 
-        let _account = await account.model.findOne({
+        let _account = await Account.model.findOne({
             where: {
                 mobile
             }

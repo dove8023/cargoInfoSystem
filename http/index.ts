@@ -2,13 +2,12 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-09 07:27:00
+ * @Last Modified time: 2018-04-29 09:58:39
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
-import router from "./auth";
 import login from "api/auth/login";
 
 let app = new Koa();
@@ -50,7 +49,7 @@ let session = require('continuation-local-storage').createNamespace("session");
 
 // deal login user
 app.use(async (ctx: Koa.Context, next: Function) => {
-    // await login.loginCheck(ctx);
+    await login.loginCheck(ctx);
     return new Promise((resolve, reject) => {
         session.run(async () => {
             if (Object.keys(ctx.state).length) {
@@ -60,6 +59,15 @@ app.use(async (ctx: Koa.Context, next: Function) => {
         });
     });
 });
+
+
+import Router = require("koa-router");
+import { RegisterRouter } from "common/restful";
+let router = new Router();
+RegisterRouter(router);
+
+
+
 app.use(router.routes());
 
 export default app;

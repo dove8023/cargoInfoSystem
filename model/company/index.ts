@@ -2,15 +2,16 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 16:25:11 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 19:15:14
+ * @Last Modified time: 2018-04-29 10:01:34
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from 'sequelize';
 
-class Company {
+export class Company {
     model: Model<any, any>;
+    static model: any = DB.models.customer;
     constructor(model: Model<any, any>) {
         this.model = model;
     }
@@ -66,4 +67,4 @@ class Company {
     }
 }
 
-export let company = new Company(DB.models.Company as Model<any, any>);
+// export let company = new Company(DB.models.Company as Model<any, any>);

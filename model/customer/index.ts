@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-28 11:08:01 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-10 17:25:00
+ * @Last Modified time: 2018-04-29 09:27:10
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -17,33 +17,52 @@ import { Restful, Router } from "common/restful";
 
 @Restful()
 export class Customer extends ModelBase {
+    static model: any = DB.models.customer;
     constructor(model: Model<any, any>) {
         super(model);
     }
 
-    @Router("/ok", "get")
-    ok(ctx: Context, next: Function) {
-        console.log("ok has been");
-        ctx.body = "ok has been called.";
-    }
-
-    // async post(ctx: Context) {
-    //     let { name, address, mobile } = ctx.request.body;
-    //     if (!name) {
-    //         throw new Error("customer add, need name.");
-    //     }
-    //     let companyId = ctx.state.users.company.id;
-    //     let operaterId = ctx.state.users.staff.id;
-
-    //     return await this.model.create({
-    //         id: uuid.v1(),
-    //         companyId,
-    //         operaterId,
-    //         name,
-    //         address,
-    //         mobile
-    //     });
+    // @Router("/ok", "get")
+    // async ok(ctx: Context, next: Function) {
+    //     console.log("ok has been");
+    //     console.log(Object.getOwnPropertyNames(this))
+    //     ctx.body = await DB.models.customer.find({});
+    //     // ctx.body = "ok has been called.";
     // }
+
+    // @Router("/test", "get")
+    // async test(ctx: Context) {
+
+    //     console.log(this);
+    //     let result = await this.model.find({});
+    //     ctx.body = {
+    //         msg: result
+    //     };
+    // }
+
+    async post(ctx: Context) {
+        let { name, address, mobile } = ctx.request.body;
+        if (!name) {
+            throw new Error("customer add, need name.");
+        }
+
+        let companyId = ctx.state.session.company.id;
+        let operaterId = ctx.state.session.staff.id;
+
+        let result = await this.model.create({
+            id: uuid.v1(),
+            companyId,
+            operaterId,
+            name,
+            address,
+            mobile
+        });
+        ctx.body = {
+            code: 0,
+            data: result,
+            msg: "ok"
+        }
+    }
 
     // async put(ctx: Context) {
     //     let { id } = ctx.params;
@@ -75,4 +94,4 @@ export class Customer extends ModelBase {
 
 }
 
-export let customer = new Customer(DB.models.customer as Model<any, any>);
+// export let customer = new Customer(DB.models.customer as Model<any, any>);

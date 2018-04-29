@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-28 11:08:01 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-06 23:35:09
+ * @Last Modified time: 2018-04-29 08:14:22
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -40,4 +40,4 @@ export class Types extends ModelBase {
     }
 }
 
-export let types = new Types(DB.models.types as Model<any, any>);
+// export let types = new Types(DB.models.types as Model<any, any>);

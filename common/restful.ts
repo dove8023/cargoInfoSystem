@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 17:24:21 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-12 07:46:43
+ * @Last Modified time: 2018-04-29 09:24:42
  * @content what is the content of this file. */
 
 
@@ -14,25 +14,8 @@ let allControlls: { [index: string]: any; } = {};
 
 export function Restful(modelUrl?: string) {
     return function (target: any) {
-        // console.log(11111, target.name);
-        // console.log(111110000, Object.getOwnPropertyNames(target.prototype));
-
-        // for (let key in target.prototype) {
-        //     console.log(89, key);
-        // }
-
-        // if (typeof target.prototype.test == 'function') {
-        //     console.log("test is function.");
-        // }
-
-        // target.prototype.test();
-        // for (let item in target) {
-        //     console.log(item);
-        // }
-
-
-
         modelUrl = modelUrl || "/" + target.name.replace(/Controller/, '');
+
         allControlls[modelUrl] = target;
     }
 }
@@ -43,6 +26,7 @@ export function Router(url: string, method: string = 'get') {
         let fn = desc.value;
         fn.$url = url;
         fn.$method = method;
+
     }
 }
 
@@ -61,6 +45,7 @@ function loadRouter(modelUrl: string, target: any, router: any) {
             methods.push(item);
         }
     }
+
     methods.forEach((method: string) => {
         if (method == 'constructor') {
             return;
@@ -79,7 +64,7 @@ function loadRouter(modelUrl: string, target: any, router: any) {
         let url, httpMethod;
         switch (method) {
             case 'get':
-                url = path.join(modelUrl, "/id");
+                url = path.join(modelUrl, "/:id");
                 httpMethod = 'get';
                 break;
             case 'find':
@@ -91,11 +76,11 @@ function loadRouter(modelUrl: string, target: any, router: any) {
                 httpMethod = 'post';
                 break;
             case 'put':
-                url = path.join(modelUrl, "/id");
+                url = path.join(modelUrl, "/:id");
                 httpMethod = 'put';
                 break;
             case 'delete':
-                url = path.join(modelUrl, "/id");
+                url = path.join(modelUrl, "/:id");
                 httpMethod = 'delete';
                 break;
             default:
@@ -106,21 +91,8 @@ function loadRouter(modelUrl: string, target: any, router: any) {
         }
 
         if (url && httpMethod) {
-            console.log("add router : ", httpMethod, url);
-            router[httpMethod](url, fn);
+            // console.log("add router : ", httpMethod, url);
+            router[httpMethod](url, fn.bind(target));
         }
     });
 }
-
-
-// function Restful(mountUrl) {
-//     return function (target) {
-//         target.prototype.$isValidId = target.prototype.$isValidId || function (id) {
-//             return /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(id.toString());
-//         };
-//         if (!mountUrl) {
-//             mountUrl = '/' + target.name.replace(/Controller/, '');
-//         }
-//         controllers[mountUrl] = target;
-//     };
-// }

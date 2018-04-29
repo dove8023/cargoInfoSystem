@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-01 17:48:06 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-06 23:40:53
+ * @Last Modified time: 2018-04-29 08:14:10
  * @content what is the content of this file. */
 
 
@@ -38,4 +38,4 @@ export class Order extends ModelBase {
     }
 }
 
-export let order = new Order(DB.models.order as Model<any, any>);
+// export let order = new Order(DB.models.order as Model<any, any>);

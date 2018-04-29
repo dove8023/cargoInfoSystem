@@ -2,21 +2,21 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:30:07 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 19:15:59
+ * @Last Modified time: 2018-04-29 11:37:12
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from "sequelize";
+import { } from "common/"
 
-class Account {
-    model: Model<any, any>;
-    constructor(model: Model<any, any>) {
-        this.model = model;
+export class Account {
+    static model: Model<any, any> = DB.models.Account as Model<any, any>;
+    constructor() {
     }
 
     async get(id: string) {
-        return await this.model.findOne({
+        return await Account.model.findOne({
             where: {
                 id
             }
@@ -25,7 +25,7 @@ class Account {
 
     async findOne(params: { mobile: string, password: string }) {
         let { mobile, password } = params;
-        return await this.model.findOne({
+        return await Account.model.findOne({
             where: {
                 mobile,
                 password
@@ -35,7 +35,7 @@ class Account {
 
     async find(params: { page?: number, size?: number, mobile?: string, password?: string }) {
         let { page = 0, size = 20, mobile, password } = params;
-        return await this.model.find({
+        return await Account.model.find({
             where: {
                 mobile,
                 password
@@ -46,7 +46,7 @@ class Account {
     }
 
     async add(params: { mobile: string, password: string, [index: string]: any }) {
-        let account = await this.model.findOne({
+        let account = await Account.model.findOne({
             where: {
                 mobile: params.mobile
             }
@@ -60,7 +60,7 @@ class Account {
             throw new Error("register account need mobile and password");
         }
 
-        return await this.model.create({
+        return await Account.model.create({
             id: uuid.v1(),
             mobile: params.mobile,
             password: params.password,
@@ -79,4 +79,4 @@ class Account {
     }
 }
 
-export let account = new Account(DB.models.Account as Model<any, any>);
+// export let account = new Account(DB.models.Account as Model<any, any>);

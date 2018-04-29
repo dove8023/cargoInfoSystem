@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 16:25:11 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-09 00:29:12
+ * @Last Modified time: 2018-04-29 08:14:17
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -49,4 +49,4 @@ class Staff extends ModelBase {
     }
 }
 
-export let staff = new Staff(DB.models.Staff as Model<any, any>);
+// export let staff = new Staff(DB.models.Staff as Model<any, any>);
