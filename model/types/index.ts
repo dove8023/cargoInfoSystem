@@ -12,10 +12,13 @@ import { Context } from 'koa';
 import * as moment from 'moment';
 import { UserInfo } from '../interface';
 import { ModelBase } from "common/model";
+import { Restful } from 'common/restful';
 
+@Restful()
 export class Types extends ModelBase {
+    static model: any = DB.models.types;
     constructor(model: Model<any, any>) {
-        super(model);
+        super();
     }
 
     async post(ctx: Context) {

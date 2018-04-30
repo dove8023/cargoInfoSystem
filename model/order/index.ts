@@ -13,10 +13,12 @@ import { Context } from 'koa';
 import * as moment from 'moment';
 import { UserInfo } from 'model/interface';
 import { getNamespace } from "continuation-local-storage";
-import { ModelBase } from "common/model"
+import { ModelBase } from "common/model";
+
 export class Order extends ModelBase {
-    constructor(model: Model<any, any>) {
-        super(model);
+    static model: any = DB.models.order;
+    constructor() {
+        super();
     }
 
     async post(params: { customerId: string; total: number }) {
@@ -37,5 +39,3 @@ export class Order extends ModelBase {
         });
     }
 }
-
-// export let order = new Order(DB.models.order as Model<any, any>);

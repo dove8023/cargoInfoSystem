@@ -18,8 +18,8 @@ import { Restful, Router } from "common/restful";
 @Restful()
 export class Customer extends ModelBase {
     static model: any = DB.models.customer;
-    constructor(model: Model<any, any>) {
-        super(model);
+    constructor() {
+        super();
     }
 
     // @Router("/ok", "get")

@@ -8,37 +8,26 @@
 import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from 'sequelize';
+import { ModelBase } from "common/model";
+import { Context } from 'koa';
+import { Restful, Router } from "common/restful";
 
-export class Company {
-    model: Model<any, any>;
-    static model: any = DB.models.customer;
-    constructor(model: Model<any, any>) {
-        this.model = model;
+@Restful()
+export class Company extends ModelBase {
+    static model: any = DB.models.company;
+    constructor() {
+        super();
     }
 
-    async get(id: string) {
-        return await this.model.findOne({
-            where: {
-                id
-            }
-        });
+    async find(ctx: Context) {
+        ctx.body = {
+            code: -1,
+            msg: "not Open"
+        }
     }
 
-    async find(params: { page?: number, size?: number, name: string, createUser: string, [index: string]: any }) {
-        let { page = 0, size = 20, createUser } = params;
-        let where = {
-            createUser
-        };
-
-        return await this.model.findOne({
-            where,
-            limit: size,
-            offset: page * size
-        });
-    }
-
-    async add(params: { createUser: string, name: string, [index: string]: any }) {
-        let { createUser, name } = params;
+    async post(ctx: Context) {
+        let { createUser, name } = ctx.request.body;
 
         let company = await this.model.findOne({
             where: {
@@ -55,16 +44,17 @@ export class Company {
             createUser,
             name
         });
-        return result;
+        ctx.body = {
+            code: 0,
+            msg: "ok",
+            data: result
+        };
     }
 
-    update() {
-
-    }
-
-    delete() {
-
+    async delete(ctx: Context) {
+        ctx.body = {
+            code: -1,
+            msg: "not Open"
+        }
     }
 }
-
-// export let company = new Company(DB.models.Company as Model<any, any>);

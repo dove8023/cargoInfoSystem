@@ -10,6 +10,7 @@ import uuid = require("uuid");
 import { Model } from 'sequelize';
 import { getNamespace } from "continuation-local-storage";
 import { ModelBase } from "common/model";
+import { Restful } from 'common/restful';
 
 export enum Role {
     OWN = 1,
@@ -17,9 +18,11 @@ export enum Role {
     COMMON = 3
 }
 
+@Restful()
 class Staff extends ModelBase {
-    constructor(model: Model<any, any>) {
-        super(model);
+    static model: any = DB.models.staff;
+    constructor() {
+        super();
     }
 
     async post(params: { accountId: string, password: string, [index: string]: any }) {
@@ -48,5 +51,3 @@ class Staff extends ModelBase {
         return result;
     }
 }
-
-// export let staff = new Staff(DB.models.Staff as Model<any, any>);

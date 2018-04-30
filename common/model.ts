@@ -36,6 +36,9 @@ export class ModelBase {
         // let result = await ModelBase.resourceCheck(id, this.model);
 
         let result = await this.model.findById(id);
+        if (result && result.deletedAt) {
+            result = null;
+        }
         ctx.body = {
             code: 0,
             data: result,

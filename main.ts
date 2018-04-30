@@ -20,6 +20,7 @@ process.on('uncaughtException', function (err) {
 
 init(config.postgres.url, config.postgres.debug);
 import "modelSql/index";
+import "model";
 
 cache.init(config.redis.url);
 

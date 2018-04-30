@@ -8,34 +8,28 @@
 import { DB } from "common/db";
 import uuid = require("uuid");
 import { Model } from "sequelize";
-import { } from "common/"
+import { ModelBase } from "common/model";
+import { Context } from 'koa';
 
-export class Account {
+export class Account extends ModelBase {
     static model: Model<any, any> = DB.models.Account as Model<any, any>;
     constructor() {
+        super();
     }
 
-    async get(id: string) {
+    // async findOne(params: { mobile: string, password: string }) {
+    //     let { mobile, password } = params;
+    //     return await Account.model.findOne({
+    //         where: {
+    //             mobile,
+    //             password
+    //         }
+    //     });
+    // }
+
+    async find(ctx: Context) {
+        let { page = 0, size = 20, mobile, password } = ctx.request.query;
         return await Account.model.findOne({
-            where: {
-                id
-            }
-        });
-    }
-
-    async findOne(params: { mobile: string, password: string }) {
-        let { mobile, password } = params;
-        return await Account.model.findOne({
-            where: {
-                mobile,
-                password
-            }
-        });
-    }
-
-    async find(params: { page?: number, size?: number, mobile?: string, password?: string }) {
-        let { page = 0, size = 20, mobile, password } = params;
-        return await Account.model.find({
             where: {
                 mobile,
                 password
@@ -45,7 +39,7 @@ export class Account {
         });
     }
 
-    async add(params: { mobile: string, password: string, [index: string]: any }) {
+    async post(params: { mobile: string, password: string, [index: string]: any }) {
         let account = await Account.model.findOne({
             where: {
                 mobile: params.mobile
@@ -69,14 +63,4 @@ export class Account {
             age: params.age
         });
     }
-
-    update() {
-
-    }
-
-    delete() {
-
-    }
 }
-
-// export let account = new Account(DB.models.Account as Model<any, any>);

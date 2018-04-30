@@ -10,33 +10,33 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { Context } from 'koa';
 import * as moment from 'moment';
-import { types } from "model";
+import { Types } from "model";
 import { UserInfo } from '../interface';
 import { getNamespace } from 'continuation-local-storage';
-import { company } from '../company/index';
 import { ModelBase } from 'common/model';
+import { Restful } from 'common/restful';
 
-
+@Restful()
 export class Goods extends ModelBase {
-    constructor(model: Model<any, any>) {
-        super(model);
+    static model: any = DB.models.goods;
+    constructor() {
+        super();
     }
 
-    async post(params: any) {
+    async post(ctx: Context) {
         let userInfo: UserInfo = getNamespace("session").get("session");
 
-        let { customerId, typeId, price, amount, weight } = params;
+        let { customerId, typeId, price, amount, weight } = ctx.request.body;
         if (!price || !customerId || price < 0 || amount < 0 || weight < 0) {
             throw new Error("Goods add, total price and customerId need.");
         }
         let companyId = userInfo.company.id;
         let operaterId = userInfo.staff.id;
 
-        let _types = await types.get(typeId);
+        let _types = await Types.get(typeId);
         if (!_types) {
             throw new Error("Goods add, typeId not right");
         }
-
 
         return await this.model.create({
             id: uuid.v1(),
@@ -50,5 +50,3 @@ export class Goods extends ModelBase {
         });
     }
 }
-
-// export let goods = new Goods(DB.models.goods as Model<any, any>);
