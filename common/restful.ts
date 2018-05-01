@@ -13,7 +13,6 @@ import * as path from "path";
 let allControlls: { [index: string]: any; } = {};
 
 export function Restful(modelUrl?: string) {
-    console.log("Restful")
     return function (target: any) {
         modelUrl = modelUrl || "/" + target.name.replace(/Controller/, '');
 
@@ -32,7 +31,6 @@ export function Router(url: string, method: string = 'get') {
 }
 
 export function RegisterRouter(router: koaRouter) {
-    console.log("RegisterRouter", allControlls)
     for (let url in allControlls) {
         let controlle = allControlls[url];
         loadRouter(url, controlle, router);
@@ -93,6 +91,7 @@ function loadRouter(modelUrl: string, target: any, router: any) {
         }
 
         if (url && httpMethod) {
+            url = url.toLowerCase();
             console.log("add router : ", httpMethod, url);
             router[httpMethod](url, fn.bind(target));
         }

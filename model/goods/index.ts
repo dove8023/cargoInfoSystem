@@ -16,6 +16,8 @@ import { getNamespace } from 'continuation-local-storage';
 import { ModelBase } from 'common/model';
 import { Restful } from 'common/restful';
 
+
+let types = new Types();
 @Restful()
 export class Goods extends ModelBase {
     static model: any = DB.models.goods;
@@ -33,12 +35,12 @@ export class Goods extends ModelBase {
         let companyId = userInfo.company.id;
         let operaterId = userInfo.staff.id;
 
-        let _types = await Types.get(typeId);
+        let _types = await types.get(typeId);
         if (!_types) {
             throw new Error("Goods add, typeId not right");
         }
 
-        return await this.model.create({
+        let result = await this.model.create({
             id: uuid.v1(),
             companyId,
             operaterId,
@@ -48,5 +50,11 @@ export class Goods extends ModelBase {
             amount,
             weight
         });
+
+        ctx.body = {
+            code: 0,
+            msg: "ok",
+            data: result
+        }
     }
 }

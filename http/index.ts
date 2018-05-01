@@ -8,7 +8,8 @@
 import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
-import login from "api/auth/login";
+import { Auth } from "api/auth";
+import "api/auth";
 
 let app = new Koa();
 
@@ -49,7 +50,7 @@ let session = require('continuation-local-storage').createNamespace("session");
 
 // deal login user
 app.use(async (ctx: Koa.Context, next: Function) => {
-    // await login.loginCheck(ctx);
+    await Auth.loginCheck(ctx);
     return new Promise((resolve, reject) => {
         session.run(async () => {
             if (Object.keys(ctx.state).length) {

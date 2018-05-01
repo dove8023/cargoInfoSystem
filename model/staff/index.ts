@@ -11,6 +11,7 @@ import { Model } from 'sequelize';
 import { getNamespace } from "continuation-local-storage";
 import { ModelBase } from "common/model";
 import { Restful } from 'common/restful';
+import { Context } from 'koa';
 
 export enum Role {
     OWN = 1,
@@ -19,16 +20,18 @@ export enum Role {
 }
 
 @Restful()
-class Staff extends ModelBase {
+export class Staff extends ModelBase {
     static model: any = DB.models.staff;
     constructor() {
         super();
     }
 
-    async post(params: { accountId: string, password: string, [index: string]: any }) {
+    async post(ctx: Context) {
+
+        let { accountId, password, mobile, sex, name, age } = ctx.request.body;
         let account = await this.model.findOne({
             where: {
-                mobile: params.mobile
+                mobile: mobile
             }
         });
 
@@ -36,18 +39,22 @@ class Staff extends ModelBase {
             throw new Error("mobile is already have");
         }
 
-        if (!params.mobile || !params.password) {
+        if (!mobile || !password) {
             throw new Error("register account need mobile and password");
         }
 
         let result = await this.model.create({
             id: uuid.v1(),
-            mobile: params.mobile,
-            password: params.password,
-            name: params.name,
-            sex: params.sex,
-            age: params.age
+            mobile: mobile,
+            password: password,
+            name: name,
+            sex: sex,
+            age: age
         });
-        return result;
+        ctx.body = {
+            code: 0,
+            msg: "ok",
+            data: result
+        }
     }
 }

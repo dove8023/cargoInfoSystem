@@ -22,24 +22,6 @@ export class Customer extends ModelBase {
         super();
     }
 
-    // @Router("/ok", "get")
-    // async ok(ctx: Context, next: Function) {
-    //     console.log("ok has been");
-    //     console.log(Object.getOwnPropertyNames(this))
-    //     ctx.body = await DB.models.customer.find({});
-    //     // ctx.body = "ok has been called.";
-    // }
-
-    // @Router("/test", "get")
-    // async test(ctx: Context) {
-
-    //     console.log(this);
-    //     let result = await this.model.find({});
-    //     ctx.body = {
-    //         msg: result
-    //     };
-    // }
-
     async post(ctx: Context) {
         let { name, address, mobile } = ctx.request.body;
         if (!name) {

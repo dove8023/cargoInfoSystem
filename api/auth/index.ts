@@ -9,10 +9,20 @@ import * as md5 from "md5";
 import { Account, Staff, Company } from "model";
 import cache from "common/cache";
 import * as Koa from 'koa';
+import { Restful, Router } from 'common/restful';
+import { Context } from 'koa';
 
-class Login {
-    async login(params: { mobile: string, password: string }) {
-        let { mobile, password } = params;
+@Restful()
+export class Auth {
+
+    @Router("/test", "get")
+    test(ctx: Context) {
+        ctx.body = "test test";
+    }
+
+    @Router("/login", "post")
+    async login(ctx: Context) {
+        let { mobile, password } = ctx.request.body;
         mobile = String(mobile);
         password = String(password);
         if (!mobile || !password) {
@@ -46,7 +56,7 @@ class Login {
             account: _account
         }
 
-        let _staff = await staff.model.findOne({
+        let _staff = await Staff.model.findOne({
             where: {
                 accountId: _account.id
             }
@@ -55,7 +65,7 @@ class Login {
             throw new Error("Staff, 丢失");
         }
 
-        let _company = await company.model.findOne({
+        let _company = await Company.model.findOne({
             where: {
                 id: _staff.companyId
             }
@@ -67,10 +77,10 @@ class Login {
         Users.staff = _staff;
         Users.company = _company;
 
-        let token = this.getToken(_staff.id, _company.id);
+        let token = Auth.getToken(_staff.id, _company.id);
         await cache.write(token, Users, 60 * 30);
 
-        return {
+        ctx.body = {
             code: 0,
             msg: "登陆成功",
             data: {
@@ -79,12 +89,12 @@ class Login {
         }
     }
 
-    getToken(staffId: string, companyId: string) {
+    static getToken(staffId: string, companyId: string) {
         let str = [...arguments, Date.now()].join(":");
         return md5(str);
     }
 
-    async loginCheck(ctx: Koa.Context) {
+    static async loginCheck(ctx: Koa.Context) {
         let allowUrls = ["/auth/login", "/auth/register", "/test", "/favicon.ico"];
         let url = ctx.url;
         if (allowUrls.indexOf(url) > -1) {
@@ -105,6 +115,3 @@ class Login {
         }
     }
 }
-
-let login = new Login();
-export default login;

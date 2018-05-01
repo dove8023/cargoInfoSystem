@@ -8,7 +8,6 @@
 
 import sequelize = require("sequelize");
 import { DB } from "common/db";
-import { customer } from '../../model/customer/index';
 
 let columns = {
     id: {

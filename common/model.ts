@@ -14,9 +14,7 @@ import { Context } from "koa";
 
 export class ModelBase {
     model: any = '';
-    constructor() {
-        console.log("ModelBase has")
-    }
+    constructor() { }
 
     static async resourceCheck(id: string, model: Model<any, any>): Promise<any> {
         let userInfo: UserInfo = getNamespace("session").get("session");

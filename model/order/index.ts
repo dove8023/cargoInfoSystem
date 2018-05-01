@@ -21,21 +21,27 @@ export class Order extends ModelBase {
         super();
     }
 
-    async post(params: { customerId: string; total: number }) {
+    async post(ctx: Context) {
         let userInfo = getNamespace("session").get("session");
-        let { customerId, total } = params;
+        let { customerId, total } = ctx.request.body;
         if (!total || !customerId) {
             throw new Error("order add, total total and customerId need.");
         }
         let companyId = userInfo.company.id;
         let operaterId = userInfo.staff.id;
 
-        return await this.model.create({
+        let result = await this.model.create({
             id: uuid.v1(),
             companyId,
             operaterId,
             customerId,
             total
         });
+
+        ctx.body = {
+            code: 0,
+            msg: "ok",
+            data: result
+        }
     }
 }

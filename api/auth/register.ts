@@ -5,11 +5,15 @@
  * @Last Modified time: 2018-03-21 23:24:13
  * @content what is the content of this file. */
 
-import { account, company, staff, Role } from "model";
+import { Account, Company, Staff, Role } from "model";
 import * as uuid from "uuid";
+import { Restful } from 'common/restful';
 
 
+@Restful()
 class Register {
+
+    @Router("/index", "post")
     async register(params: { mobile: string; password: string; authCode: string; username: string; companyName: string }) {
         let { mobile, password, authCode, username, companyName } = params;
         if (!mobile || !password || !username || !companyName) {
@@ -19,7 +23,7 @@ class Register {
         /* 检查验证码 */
 
 
-        let hasAccount = await account.model.findOne({
+        let hasAccount = await Account.model.findOne({
             where: {
                 mobile
             }
@@ -29,13 +33,13 @@ class Register {
             throw new Error("mobile is already have.");
         }
         /* create account */
-        let registAccount = await account.add({
+        let registAccount = await Account.post({
             mobile,
             password,
             name: username
         });
         /* create company */
-        let registCompany = await company.add({
+        let registCompany = await Company.post({
             createUser: registAccount.id,
             name: companyName
         });

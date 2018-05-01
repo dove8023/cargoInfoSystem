@@ -17,7 +17,7 @@ import { Restful } from 'common/restful';
 @Restful()
 export class Types extends ModelBase {
     static model: any = DB.models.types;
-    constructor(model: Model<any, any>) {
+    constructor() {
         super();
     }
 
