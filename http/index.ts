@@ -2,13 +2,14 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-29 09:58:39
+ * @Last Modified time: 2018-05-02 08:10:41
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
 import { Auth } from "api/auth";
+import * as statics from "koa-static";
 import "api/auth";
 
 let app = new Koa();
@@ -45,6 +46,10 @@ app.use(async (ctx: Koa.Context, next: Function) => {
     const ms = Date.now() - start;
     console.log(`${moment().format()} ${ctx.method} ${ctx.url} ${ctx.status}--- ${ms}ms`);
 });
+
+// static 
+app.use(statics("./www/build"));
+
 
 let session = require('continuation-local-storage').createNamespace("session");
 
