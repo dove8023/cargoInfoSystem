@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 17:24:21 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-02 10:22:16
+ * @Last Modified time: 2018-06-02 17:57:02
  * @content what is the content of this file. */
 
 
@@ -39,7 +39,7 @@ export function RegisterRouter(router: koaRouter) {
 let defaultMethod = ['get', 'find', 'post', 'put', 'delete'];
 function loadRouter(modelUrl: string, target: any, router: any) {
     let methods = Object.getOwnPropertyNames(target.prototype);
-
+    console.log("==============")
     for (let item of defaultMethod) {
         if (methods.indexOf(item) < 0) {
             methods.push(item);
@@ -79,7 +79,8 @@ function loadRouter(modelUrl: string, target: any, router: any) {
                 break;
             default:
                 if (fn.$url && fn.$method) {
-                    url = path.join(modelUrl, fn.$url);
+                    // url = path.join(modelUrl, fn.$url);
+                    url = fn.$url;
                     httpMethod = fn.$method;
                 } else {
                     return;

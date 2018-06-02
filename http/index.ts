@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-02 11:35:53
+ * @Last Modified time: 2018-06-02 18:12:25
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { Auth } from "api/auth";
 import * as statics from "koa-static";
 import "api/auth";
+import { LoginCheck } from "middleware";
 
 let app = new Koa();
 
@@ -50,31 +51,7 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 // static 
 app.use(statics("./www"));
 
-
-let session = require('continuation-local-storage').createNamespace("session");
-
-// login check
-let allowCrossUrls = ["/auth/login", "/auth/register", "/test", "/open", "/favicon.ico"];
-app.use(async (ctx: Koa.Context, next: Function) => {
-    let url = ctx.url;
-    let urlCheck = allowCrossUrls.some((value) => {
-        return url.indexOf(value) > -1;
-    });
-    if (urlCheck) {
-        return next();
-    }
-
-    await Auth.loginCheck(ctx);
-    return new Promise((resolve, reject) => {
-        session.run(async () => {
-            if (Object.keys(ctx.state).length) {
-                session.set("session", ctx.state.session);
-            }
-            resolve(next());
-        });
-    });
-});
-
+app.use(LoginCheck);
 
 import Router = require("koa-router");
 import { RegisterRouter } from "common/restful";

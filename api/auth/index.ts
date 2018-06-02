@@ -15,13 +15,13 @@ import { Context } from 'koa';
 @Restful()
 export class Auth {
 
-    @Router("/test", "get")
+    @Router("/open/test", "get")
     test(ctx: Context) {
         console.log("what");
         ctx.body = "test test";
     }
 
-    @Router("/login", "post")
+    @Router("/open/login", "post")
     async login(ctx: Context) {
         let { mobile, password } = ctx.request.body;
         mobile = String(mobile);
@@ -93,21 +93,5 @@ export class Auth {
     static getToken(staffId: string, companyId: string) {
         let str = [...arguments, Date.now()].join(":");
         return md5(str);
-    }
-
-    static async loginCheck(ctx: Koa.Context) {
-        let url = ctx.url;
-        let { token } = ctx.header;
-        if (!token) {
-            throw new Error("token dose not exist. " + url);
-        }
-        let session = await cache.read(token);
-        if (!session) {
-            throw new Error("token has expired. " + url);
-        }
-
-        ctx.state = {
-            session
-        }
     }
 }
