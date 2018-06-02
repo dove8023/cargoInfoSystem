@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 16:46:54 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-28 11:02:53
+ * @Last Modified time: 2018-06-02 19:04:52
  * @content what is the content of this file. */
 
 import path = require("path");
@@ -18,7 +18,9 @@ export function loadTest(dir: string): void {
             loadTest(fullPath);
         } else {
             let p = fullPath.replace(/\.(ts|js)$/, "");
-            require(p);
+            let g = require(p);
+            console.log("g-------------------");
+            console.log(g);
         }
     }
 }

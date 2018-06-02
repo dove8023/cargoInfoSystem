@@ -1,21 +1,31 @@
 /*
  * @Author: Mr.He 
- * @Date: 2018-03-21 17:17:54 
+ * @Date: 2018-06-02 18:58:05 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-03-21 23:24:13
- * @content what is the content of this file. */
+ * @Last Modified time: 2018-06-02 19:00:33
+ * @content: Login and register
+ */
 
-import { Account, Company, Staff, Role } from "model";
-import * as uuid from "uuid";
+
+import * as md5 from "md5";
+import { Account, Staff, Company } from "httpModel";
+import cache from "common/cache";
+import * as Koa from 'koa';
 import { Restful, Router } from 'common/restful';
-
+import { Context } from 'koa';
 
 @Restful()
-class Register {
+export class Auth {
+
+    @Router("/open/test", "get")
+    test(ctx: Context) {
+        console.log("what");
+        ctx.body = "test test";
+    }
 
     @Router("/open/register", "post")
-    async register(params: { mobile: string; password: string; authCode: string; username: string; companyName: string }) {
-        let { mobile, password, authCode, username, companyName } = params;
+    async register(ctx: Context) {
+        let { mobile, password, authCode, username, companyName } = ctx.request.body;
         if (!mobile || !password || !username || !companyName) {
             throw new Error("注册参数不完善");
         }
@@ -60,6 +70,3 @@ class Register {
         }
     }
 }
-
-let register = new Register();
-export default register;

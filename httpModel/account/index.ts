@@ -27,12 +27,11 @@ export class Account extends ModelBase {
     //     });
     // }
 
-    async find(ctx: Context) {
-        let { page = 0, size = 20, mobile, password } = ctx.request.query;
+    static async find(ctx: Context) {
+        let { page = 0, size = 20, mobile } = ctx.request.query;
         return await Account.model.findOne({
             where: {
                 mobile,
-                password
             },
             limit: size,
             offset: page * size

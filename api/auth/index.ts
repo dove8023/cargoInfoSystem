@@ -6,7 +6,7 @@
  * @content login. */
 
 import * as md5 from "md5";
-import { Account, Staff, Company } from "model";
+// import { Account, Staff, Company } from "model";
 import cache from "common/cache";
 import * as Koa from 'koa';
 import { Restful, Router } from 'common/restful';
