@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 11:19:32 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-07 00:43:50
+ * @Last Modified time: 2018-06-02 09:40:04
  * @content what is the content of this file. */
 
 require('app-module-path').addPath(__dirname);
@@ -18,10 +18,13 @@ process.on('uncaughtException', function (err) {
     console.error('2222 uncaughtException==>', err.stack ? err.stack : err);
 });
 
+/* init DB, import table models. */
 init(config.postgres.url, config.postgres.debug);
 import "modelSql/index";
 import "model";
+DB.sync({ force: false });
 
+/* inject redis server. */
 cache.init(config.redis.url);
 
 import app from "./http";
@@ -29,7 +32,6 @@ const http = require("http");
 
 let PORT = config.port;
 
-DB.sync({ force: false });
 
 // import "model/account/account";
 

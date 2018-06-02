@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 17:24:21 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-29 09:24:42
+ * @Last Modified time: 2018-06-02 10:22:16
  * @content what is the content of this file. */
 
 
@@ -15,7 +15,6 @@ let allControlls: { [index: string]: any; } = {};
 export function Restful(modelUrl?: string) {
     return function (target: any) {
         modelUrl = modelUrl || "/" + target.name.replace(/Controller/, '');
-
         allControlls[modelUrl] = target;
     }
 }
@@ -26,12 +25,12 @@ export function Router(url: string, method: string = 'get') {
         let fn = desc.value;
         fn.$url = url;
         fn.$method = method;
-
     }
 }
 
 export function RegisterRouter(router: koaRouter) {
     for (let url in allControlls) {
+        /* get a constructor */
         let controlle = allControlls[url];
         loadRouter(url, controlle, router);
     }
@@ -40,12 +39,12 @@ export function RegisterRouter(router: koaRouter) {
 let defaultMethod = ['get', 'find', 'post', 'put', 'delete'];
 function loadRouter(modelUrl: string, target: any, router: any) {
     let methods = Object.getOwnPropertyNames(target.prototype);
+
     for (let item of defaultMethod) {
         if (methods.indexOf(item) < 0) {
             methods.push(item);
         }
     }
-
     methods.forEach((method: string) => {
         if (method == 'constructor') {
             return;
@@ -55,11 +54,6 @@ function loadRouter(modelUrl: string, target: any, router: any) {
         if (typeof fn != 'function') {
             return;
         }
-
-        if (defaultMethod.indexOf(method) < 0 && !fn.$url) {
-            return;
-        }
-
 
         let url, httpMethod;
         switch (method) {
@@ -87,13 +81,13 @@ function loadRouter(modelUrl: string, target: any, router: any) {
                 if (fn.$url && fn.$method) {
                     url = path.join(modelUrl, fn.$url);
                     httpMethod = fn.$method;
+                } else {
+                    return;
                 }
         }
 
-        if (url && httpMethod) {
-            url = url.toLowerCase();
-            console.log("add router : ", httpMethod, url);
-            router[httpMethod](url, fn.bind(target));
-        }
+        url = url.toLowerCase();
+        console.log("add router : ", httpMethod, url);
+        router[httpMethod](url, fn.bind(target));
     });
 }

@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-05-02 08:10:41
+ * @Last Modified time: 2018-06-02 09:47:48
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
@@ -48,7 +48,7 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 });
 
 // static 
-app.use(statics("./www/build"));
+// app.use(statics("./www/build"));
 
 
 let session = require('continuation-local-storage').createNamespace("session");
