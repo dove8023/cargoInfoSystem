@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-02 09:47:48
+ * @Last Modified time: 2018-06-02 11:35:53
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
@@ -48,13 +48,22 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 });
 
 // static 
-// app.use(statics("./www/build"));
+app.use(statics("./www"));
 
 
 let session = require('continuation-local-storage').createNamespace("session");
 
-// deal login user
+// login check
+let allowCrossUrls = ["/auth/login", "/auth/register", "/test", "/open", "/favicon.ico"];
 app.use(async (ctx: Koa.Context, next: Function) => {
+    let url = ctx.url;
+    let urlCheck = allowCrossUrls.some((value) => {
+        return url.indexOf(value) > -1;
+    });
+    if (urlCheck) {
+        return next();
+    }
+
     await Auth.loginCheck(ctx);
     return new Promise((resolve, reject) => {
         session.run(async () => {

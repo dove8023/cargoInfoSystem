@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:40:37 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-02 09:52:10
+ * @Last Modified time: 2018-06-02 11:40:18
  * @content login. */
 
 import * as md5 from "md5";
@@ -17,6 +17,7 @@ export class Auth {
 
     @Router("/test", "get")
     test(ctx: Context) {
+        console.log("what");
         ctx.body = "test test";
     }
 
@@ -95,12 +96,7 @@ export class Auth {
     }
 
     static async loginCheck(ctx: Koa.Context) {
-        let allowUrls = ["/auth/login", "/auth/register", "/test", "/open", "/favicon.ico"];
         let url = ctx.url;
-        if (allowUrls.indexOf(url) > -1) {
-            return true;
-        }
-
         let { token } = ctx.header;
         if (!token) {
             throw new Error("token dose not exist. " + url);
