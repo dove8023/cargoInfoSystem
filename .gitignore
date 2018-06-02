@@ -6,3 +6,4 @@ log
 .vscode/
 tmp
 mytest/
+package-local.json
