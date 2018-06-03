@@ -20,3 +20,11 @@ export interface UserInfo {
         [index: string]: any
     }
 }
+
+
+
+export enum ROLE {
+    OWN = 0,
+    MANAGER = 1,
+    COMMON = 2
+}

@@ -58,4 +58,4 @@ let options = {
     timestamps: true,
     tableName: 'staff'
 }
-DB.models.staff = DB.define('Staff', columns, options);
+export default DB.define('Staff', columns, options);

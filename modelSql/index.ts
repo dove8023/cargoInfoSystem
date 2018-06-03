@@ -16,7 +16,6 @@ loadTest(path.join(__dirname, "./"), (model: any) => {
     if (model.default && model.default.name) {
         Models[model.default.name] = model.default;
     }
-
 });
 
 export default Models;

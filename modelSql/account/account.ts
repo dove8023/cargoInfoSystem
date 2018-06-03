@@ -25,10 +25,10 @@ let columns = {
         type: sequelize.STRING(50),
         allowNull: true,
     },
-    recentlyStaffId: {
-        type: sequelize.UUID,
-        allowNull: true,
-    },
+    /*   recentlyStaffId: {
+          type: sequelize.UUID,
+          allowNull: true,
+      }, */
     sex: {
         type: sequelize.CHAR(1),
         allowNull: true,
@@ -59,4 +59,4 @@ let options = {
     tableName: 'account'
 }
 
-export default DB.models.account = DB.define('Account', columns, options);
+export default DB.define('Account', columns, options);

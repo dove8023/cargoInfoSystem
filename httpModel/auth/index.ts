@@ -12,7 +12,8 @@ import Models from "modelSql";
 import cache from "common/cache";
 import Koa, { Context } from 'koa';
 import { Restful, Router } from 'common/restful';
-import uuid from "uuid";
+import * as uuid from "uuid";
+import { ROLE } from "httpModel/interface";
 
 @Restful()
 export class Auth {
@@ -26,10 +27,10 @@ export class Auth {
     @Router("/open/register", "post")
     async register(ctx: Context) {
         let { mobile, password, authCode, name } = ctx.request.body;
+        mobile = String(mobile);
         if (!mobile || !password || !name) {
             throw new Error("注册参数不完善");
         }
-
         /* 检查验证码 */
 
         /* check is already registed. */
@@ -52,25 +53,83 @@ export class Auth {
         });
 
         /* create company */
-        let registCompany = await Models.Company.create({
-            createUser: registAccount.id,
-            name: companyName
+        let company = await Models.Company.create({
+            id: uuid.v1(),
+            createUser: account.id,
+            name: mobile + "'s Company"
         });
 
         /* create staff */
-        let registStaff = await staff.model.create({
+        let staff = await Models.Staff.create({
             id: uuid.v1(),
-            name: username,
-            roleId: Role.OWN,
-            companyId: registCompany.id,
-            accountId: registAccount.id
+            name,
+            roleId: ROLE.OWN,
+            companyId: company.id,
+            accountId: account.id
         });
 
         /* 企业注册成功 */
         ctx.body = {
             code: 0,
             msg: "注册成功，请立即登陆",
-            data: hasAccount
+            data: {
+                account,
+                company,
+                staff
+            }
+        }
+    }
+
+    @Router("/open/login", "post")
+    async login(ctx: Context) {
+        let { mobile, password } = ctx.request.body;
+        mobile = String(mobile);
+        if (!mobile || !password) {
+            throw new Error("注册参数不完善");
+        }
+
+        let account = await Models.Account.findOne({
+            where: {
+                mobile
+            }
+        });
+        if (!account) {
+            ctx.body = {
+                code: -1,
+                msg: "未注册"
+            }
+            return;
+        }
+
+        if (account.password != password) {
+            ctx.body = {
+                code: -1,
+                msg: "密码不正确"
+            }
+            return;
+        }
+
+        let staff = await Models.Staff.findOne({
+            where: {
+                accountId: account.id
+            }
+        });
+
+        let company = await Models.Company.findById(staff.companyId);
+
+        /* 存储token */
+        let token = [account.id, mobile, Date.now(), "secret"].join(":");
+        token = md5(token);
+        await cache.write(token, {
+            account, staff, company
+        }, 60 * 30);
+
+        ctx.body = {
+            code: 0,
+            msg: "登陆成功",
+            data: {
+                token
+            }
         }
     }
 }

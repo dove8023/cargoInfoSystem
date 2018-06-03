@@ -46,4 +46,4 @@ let options = {
     timestamps: true,
     tableName: 'company'
 }
-export default DB.models.company = DB.define('Company', columns, options);
+export default DB.define('Company', columns, options);
