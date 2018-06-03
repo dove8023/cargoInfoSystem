@@ -55,7 +55,7 @@ app.use(LoginCheck);
 
 import Router = require("koa-router");
 import { RegisterRouter } from "common/restful";
-import "model";
+import "httpModel";
 
 let router = new Router();
 RegisterRouter(router);

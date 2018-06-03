@@ -10,9 +10,11 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { ModelBase } from "common/model";
 import { Context } from 'koa';
+import Models from "modelSql";
+import { Restful, Router } from "common/restful";
 
 export class Account extends ModelBase {
-    static model: Model<any, any> = DB.models.Account as Model<any, any>;
+    static model: Model<any, any> = Models.Account as Model<any, any>;
     constructor() {
         super();
     }
@@ -27,7 +29,7 @@ export class Account extends ModelBase {
     //     });
     // }
 
-    static async find(ctx: Context) {
+    async find(ctx: Context) {
         let { page = 0, size = 20, mobile } = ctx.request.query;
         return await Account.model.findOne({
             where: {

@@ -8,11 +8,11 @@
 
 
 import * as md5 from "md5";
-import { Account, Staff, Company } from "httpModel";
+import Models from "modelSql";
 import cache from "common/cache";
-import * as Koa from 'koa';
+import Koa, { Context } from 'koa';
 import { Restful, Router } from 'common/restful';
-import { Context } from 'koa';
+import uuid from "uuid";
 
 @Restful()
 export class Auth {
@@ -25,48 +25,52 @@ export class Auth {
 
     @Router("/open/register", "post")
     async register(ctx: Context) {
-        let { mobile, password, authCode, username, companyName } = ctx.request.body;
-        if (!mobile || !password || !username || !companyName) {
+        let { mobile, password, authCode, name } = ctx.request.body;
+        if (!mobile || !password || !name) {
             throw new Error("注册参数不完善");
         }
 
         /* 检查验证码 */
 
-        console.log(typeof Account, Account);
-        let hasAccount = await Account.model.findOne({
+        /* check is already registed. */
+        let hasAccount = await Models.Account.findOne({
             where: {
                 mobile
             }
         });
 
-        // if (hasAccount) {
-        //     throw new Error("mobile is already have.");
-        // }
-        // /* create account */
-        // let registAccount = await Account.post({
-        //     mobile,
-        //     password,
-        //     name: username
-        // });
-        // /* create company */
-        // let registCompany = await Company.post({
-        //     createUser: registAccount.id,
-        //     name: companyName
-        // });
-        // /* create staff */
-        // let registStaff = await staff.model.create({
-        //     id: uuid.v1(),
-        //     name: username,
-        //     roleId: Role.OWN,
-        //     companyId: registCompany.id,
-        //     accountId: registAccount.id
-        // });
+        if (hasAccount) {
+            throw new Error("mobile is already registed.");
+        }
+
+        /* create account */
+        let account = await Models.Account.create({
+            id: uuid.v1(),
+            mobile,
+            name,
+            password
+        });
+
+        /* create company */
+        let registCompany = await Models.Company.create({
+            createUser: registAccount.id,
+            name: companyName
+        });
+
+        /* create staff */
+        let registStaff = await staff.model.create({
+            id: uuid.v1(),
+            name: username,
+            roleId: Role.OWN,
+            companyId: registCompany.id,
+            accountId: registAccount.id
+        });
 
         /* 企业注册成功 */
-        return {
+        ctx.body = {
             code: 0,
             msg: "注册成功，请立即登陆",
-            data: null
+            data: hasAccount
         }
     }
 }

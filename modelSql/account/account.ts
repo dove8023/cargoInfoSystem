@@ -58,4 +58,5 @@ let options = {
     timestamps: true,
     tableName: 'account'
 }
-DB.models.account = DB.define('Account', columns, options);
+
+export default DB.models.account = DB.define('Account', columns, options);

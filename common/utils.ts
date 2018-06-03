@@ -8,19 +8,21 @@
 import path = require("path");
 import fs = require("fs");
 
-export function loadTest(dir: string): void {
+export function loadTest(dir: string, callback?: Function): void {
     let files = fs.readdirSync(dir);
     for (let f of files) {
         let fullPath = path.join(dir, f);
         let stat = fs.statSync(fullPath);
 
         if (stat.isDirectory()) {
-            loadTest(fullPath);
+            loadTest(fullPath, callback);
         } else {
             let p = fullPath.replace(/\.(ts|js)$/, "");
             let g = require(p);
-            console.log("g-------------------");
-            console.log(g);
+
+            if (callback) {
+                callback(g);
+            }
         }
     }
 }
