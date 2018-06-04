@@ -37,7 +37,9 @@
 		"*.tar.gz",
 		"http/test",
 		"**/*.test.ts",
-		"model/event/**/*.ts"
+		"model/event/**/*.ts",
+		"cargoNotUse",
+		"api"
 	],
 	"excludeNotUsing": []
 }

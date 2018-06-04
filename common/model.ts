@@ -2,12 +2,12 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-29 11:35:59
+ * @Last Modified time: 2018-06-04 09:59:43
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
 import { getNamespace } from 'continuation-local-storage';
-import { UserInfo } from 'model/interface';
+import { UserInfo } from 'httpModel/interface';
 import * as moment from 'moment';
 import { Context } from "koa";
 
@@ -67,7 +67,7 @@ export class ModelBase {
         }
     }
 
-    async post(params: any) {
+    async post(ctx: Context) {
 
     }
 
