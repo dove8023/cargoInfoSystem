@@ -8,9 +8,7 @@
 import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
-import { Auth } from "api/auth";
 import * as statics from "koa-static";
-import "api/auth";
 import { LoginCheck } from "middleware";
 
 let app = new Koa();
