@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:30:07 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-29 11:37:12
+ * @Last Modified time: 2018-06-04 10:01:12
  * @content what is the content of this file. */
 
 import { DB } from "common/db";
@@ -40,7 +40,7 @@ export class Account extends ModelBase {
         });
     }
 
-    async post(params: { mobile: string, password: string, [index: string]: any }) {
+    /* async post(params: { mobile: string, password: string, [index: string]: any }) {
         let account = await Account.model.findOne({
             where: {
                 mobile: params.mobile
@@ -63,5 +63,5 @@ export class Account extends ModelBase {
             sex: params.sex,
             age: params.age
         });
-    }
+    } */
 }
