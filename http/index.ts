@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-04 09:57:42
+ * @Last Modified time: 2018-06-09 12:14:30
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
@@ -10,7 +10,7 @@ import koaBody = require("koa-body");
 import * as moment from "moment";
 import * as statics from "koa-static";
 import { LoginCheck } from "middleware";
-
+import * as cors from "koa2-cors";
 let app = new Koa();
 
 app.use(async (ctx: Koa.Context, next: Function) => {
@@ -50,6 +50,14 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 app.use(statics("./www"));
 
 app.use(LoginCheck);
+app.use(cors({
+    origin: "*",
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 
 import Router = require("koa-router");
 import { RegisterRouter } from "common/restful";
