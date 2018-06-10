@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-02 18:03:36 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-02 18:12:03
+ * @Last Modified time: 2018-06-09 22:33:56
  * @content: 
  */
 
@@ -32,8 +32,12 @@ export async function LoginCheck(ctx: Koa.Context, next: Function): Promise<any>
         throw new Error("token has expired. " + url);
     }
 
-    session.set("userInfo", loginInfo);
-    return next();
+    return new Promise((resolve, reject) => {
+        session.run(async () => {
+            session.set("session", loginInfo);
+            resolve(next());
+        })
+    })
 }
 
 /* 

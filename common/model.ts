@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-04 09:59:43
+ * @Last Modified time: 2018-06-10 11:23:38
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
@@ -14,6 +14,7 @@ import { Context } from "koa";
 
 export class ModelBase {
     model: any = '';
+    name: string = '';
     constructor() { }
 
     static async resourceCheck(id: string, model: Model<any, any>): Promise<any> {
@@ -31,7 +32,7 @@ export class ModelBase {
 
     async get(ctx: Context) {
         let id = ctx.params.id;
-        // let result = await ModelBase.resourceCheck(id, this.model);
+        await ModelBase.resourceCheck(id, this.model);
 
         let result = await this.model.findById(id);
         if (result && result.deletedAt) {
@@ -51,11 +52,15 @@ export class ModelBase {
         }
 
         let userInfo: UserInfo = getNamespace("session").get("session");
+        let whereOptions: { [index: string]: any } = {
+            deletedAt: null
+        }
+        if (this.name != "Company" && this.name != "Account") {
+            whereOptions.companyId = userInfo.company.id;
+        }
+
         let result = await this.model.findAndCountAll({
-            where: {
-                companyId: userInfo.company.id,
-                deletedAt: null
-            },
+            where: whereOptions,
             order: [["created_at", "desc"]],
             offset: page * limit,
             limit
@@ -74,7 +79,7 @@ export class ModelBase {
     async put(ctx: Context) {
         let { id } = ctx.params;
         let params = ctx.request.body;
-        // await ModelBase.resourceCheck(id, this.model);
+        await ModelBase.resourceCheck(id, this.model);
         let result = await this.model.update(params, {
             where: {
                 id
@@ -90,7 +95,7 @@ export class ModelBase {
 
     async delete(ctx: Context) {
         let { id } = ctx.params;
-        // await ModelBase.resourceCheck(id, this.model);
+        await ModelBase.resourceCheck(id, this.model);
         let result = await this.model.update({
             deletedAt: moment().format()
         }, {
