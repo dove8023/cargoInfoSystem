@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 11:23:51
+ * @Last Modified time: 2018-06-10 23:16:46
  * @content what is the content of this file. */
 
 
@@ -74,10 +74,10 @@ export class Types extends ModelBase {
             price
         })
 
-        type.price = price;
-        type.name = name;
         await this.model.update({
-            hisPrice: type.hisPrice
+            hisPrice: type.hisPrice,
+            name,
+            price
         }, {
                 where: { id }
             })

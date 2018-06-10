@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-09 12:14:30
+ * @Last Modified time: 2018-06-10 23:41:41
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
@@ -49,15 +49,16 @@ app.use(async (ctx: Koa.Context, next: Function) => {
 // static 
 app.use(statics("./www"));
 
-app.use(LoginCheck);
 app.use(cors({
     origin: "*",
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
-    allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'token'],
 }))
+
+app.use(LoginCheck);
 
 import Router = require("koa-router");
 import { RegisterRouter } from "common/restful";

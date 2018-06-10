@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 11:23:38
+ * @Last Modified time: 2018-06-10 22:59:02
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
@@ -47,8 +47,8 @@ export class ModelBase {
 
     async find(ctx: Context) {
         let { page = 0, limit = 20 } = ctx.request.query;
-        if (limit > 20) {
-            limit = 20;
+        if (limit > 50) {
+            limit = 50;
         }
 
         let userInfo: UserInfo = getNamespace("session").get("session");
