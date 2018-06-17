@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 22:59:02
+ * @Last Modified time: 2018-06-18 01:07:52
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
@@ -32,9 +32,8 @@ export class ModelBase {
 
     async get(ctx: Context) {
         let id = ctx.params.id;
-        await ModelBase.resourceCheck(id, this.model);
+        let result = await ModelBase.resourceCheck(id, this.model);
 
-        let result = await this.model.findById(id);
         if (result && result.deletedAt) {
             result = null;
         }

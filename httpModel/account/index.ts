@@ -10,7 +10,7 @@ import uuid = require("uuid");
 import { Model } from "sequelize";
 import { ModelBase } from "common/model";
 import { Context } from 'koa';
-import Models from "modelSql";
+import Models from "sqlModel";
 import { Restful, Router } from "common/restful";
 
 export class Account extends ModelBase {

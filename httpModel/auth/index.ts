@@ -8,7 +8,7 @@
 
 
 import * as md5 from "md5";
-import Models from "modelSql";
+import Models from "sqlModel";
 import cache from "common/cache";
 import Koa, { Context } from 'koa';
 import { Restful, Router } from 'common/restful';

@@ -1,9 +1,10 @@
 /*
  * @Author: Mr.He 
- * @Date: 2018-04-01 21:16:01 
+ * @Date: 2018-04-01 12:09:49 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-04-01 21:19:34
+ * @Last Modified time: 2018-04-03 23:01:03
  * @content what is the content of this file. */
+
 
 import sequelize = require("sequelize");
 import { DB } from "common/db";
@@ -26,21 +27,8 @@ let columns = {
         type: sequelize.UUID,
         allowNull: false,
     },
-    typeId: {
-        type: sequelize.UUID,
-        allowNull: false,
-    },
-    price: {
+    totalAmount: {
         type: sequelize.NUMERIC,
-        allowNull: false,
-    },
-    // 金额
-    amount: {
-        type: sequelize.NUMERIC,
-        allowNull: false,
-    },
-    weight: {
-        type: sequelize.FLOAT,
         allowNull: false,
     },
     deletedAt: {
@@ -52,24 +40,21 @@ let columns = {
 let options = {
     indexes: [
         {
-            name: "good_company_id",
+            name: "order_company_id",
             fields: ['companyId']
         },
         {
-            name: "good_customer_id",
+            name: "order_customer_id",
             fields: ["customerId"]
         },
         {
-            name: "good_operater_id",
+            name: "order_operater_id",
             fields: ["operaterId"]
         },
-        {
-            name: "good_type_id",
-            fields: ["typeId"]
-        }
     ],
     underscored: true,
     timestamps: true,
-    tableName: 'goods'
+    tableName: 'order'
 }
-DB.models.goods = DB.define('Goods', columns, options);
+
+export default DB.define('Order', columns, options);

@@ -8,7 +8,7 @@
 import { ModelBase } from "common/model";
 import { Context } from 'koa';
 import { Restful, Router } from "common/restful";
-import Models from "modelSql";
+import Models from "sqlModel";
 
 @Restful()
 export class Company extends ModelBase {

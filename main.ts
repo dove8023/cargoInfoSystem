@@ -20,7 +20,7 @@ process.on('uncaughtException', function (err) {
 
 /* init DB, import table models. */
 init(config.postgres.url, config.postgres.debug);
-import "modelSql/index";
+import "sqlModel/index";
 DB.sync({ force: false });
 
 /* inject redis server. */

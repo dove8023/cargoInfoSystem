@@ -10,8 +10,10 @@ export * from "./account";
 export * from "./company";
 export * from "./auth";
 export * from "./types";
-
-/* export * from "./staff";
 export * from "./customer";
 export * from "./order";
+
+
+/* export * from "./staff";
+
 export * from "./goods"; */

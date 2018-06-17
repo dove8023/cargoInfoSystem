@@ -35,6 +35,10 @@ let columns = {
         type: sequelize.STRING,
         allowNull: true,
     },
+    other: {
+        type: sequelize.JSON,
+        allowNull: true,
+    },
     deletedAt: {
         type: sequelize.DATE,
         allowNull: true,
@@ -56,4 +60,5 @@ let options = {
     timestamps: true,
     tableName: 'customer'
 }
-DB.models.customer = DB.define('Customer', columns, options);
+
+export default DB.define('Customer', columns, options);
