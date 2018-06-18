@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-02 18:58:05 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 10:22:57
+ * @Last Modified time: 2018-06-18 16:54:31
  * @content: Login and register
  */
 
@@ -111,7 +111,7 @@ export class Auth {
         token = md5(token);
         await cache.write(token, {
             account, staff, company
-        }, 60 * 300);
+        }, 60 * 60);
 
         ctx.success(token)
     }
