@@ -1,5 +1,6 @@
 {
 	"appName": "${NAME}",
+	"appID": "100",
 	"postgres": {
 		"url": "${POSTGRES}",
 		"debug": true
