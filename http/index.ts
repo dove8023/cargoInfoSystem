@@ -2,14 +2,14 @@
  * @Author: Mr.He 
  * @Date: 2018-03-22 16:20:52 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 23:41:41
+ * @Last Modified time: 2018-06-18 09:58:13
  * @content what is the content of this file. */
 
 import * as Koa from "koa";
 import koaBody = require("koa-body");
 import * as moment from "moment";
 import * as statics from "koa-static";
-import { LoginCheck } from "middleware";
+import { LoginCheck, response } from "middleware";
 import * as cors from "koa2-cors";
 let app = new Koa();
 
@@ -45,6 +45,8 @@ app.use(async (ctx: Koa.Context, next: Function) => {
     const ms = Date.now() - start;
     console.log(`${moment().format()} ${ctx.method} ${ctx.url} ${ctx.status}--- ${ms}ms`);
 });
+
+app.use(response);
 
 // static 
 app.use(statics("./www"));

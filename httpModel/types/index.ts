@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 23:16:46
+ * @Last Modified time: 2018-06-18 10:16:40
  * @content what is the content of this file. */
 
 
@@ -35,7 +35,7 @@ export class Types extends ModelBase {
             }
         });
         if (result) {
-            throw new Error("品种名称必须唯一");
+            return ctx.error(301, "品种名称必须唯一");
         }
 
         let types = await this.model.create({
@@ -61,10 +61,10 @@ export class Types extends ModelBase {
         let { id } = ctx.params;
         let { name, price } = ctx.request.body;
         if (!name && !price) {
-            throw new Error("参数不正确");
+            return ctx.error(301);
         }
 
-        let type = await ModelBase.resourceCheck(id, this.model);
+        let type = await ModelBase.resourceCheck(id, this.model, ctx);
         price = Number(price);
         price = price ? price : type.price;
         name = name ? name : type.name;

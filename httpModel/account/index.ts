@@ -2,11 +2,9 @@
  * @Author: Mr.He 
  * @Date: 2018-03-02 22:30:07 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-04 10:01:12
+ * @Last Modified time: 2018-06-18 10:08:20
  * @content what is the content of this file. */
 
-import { DB } from "common/db";
-import uuid = require("uuid");
 import { Model } from "sequelize";
 import { ModelBase } from "common/model";
 import { Context } from 'koa';

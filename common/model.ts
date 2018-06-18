@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 01:07:52
+ * @Last Modified time: 2018-06-18 10:13:15
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
@@ -17,14 +17,14 @@ export class ModelBase {
     name: string = '';
     constructor() { }
 
-    static async resourceCheck(id: string, model: Model<any, any>): Promise<any> {
+    static async resourceCheck(id: string, model: Model<any, any>, ctx: Context): Promise<any> {
         let userInfo: UserInfo = getNamespace("session").get("session");
         let result = await model.findById(id);
         if (result && result.deletedAt) {
-            throw new Error("Record not found.");
+            return ctx.error(202);
         }
         if (result.companyId != userInfo.company.id) {
-            throw new Error("Permission denied.");
+            return ctx.error(201);
         }
 
         return result;
@@ -32,7 +32,7 @@ export class ModelBase {
 
     async get(ctx: Context) {
         let id = ctx.params.id;
-        let result = await ModelBase.resourceCheck(id, this.model);
+        let result = await ModelBase.resourceCheck(id, this.model, ctx);
 
         if (result && result.deletedAt) {
             result = null;

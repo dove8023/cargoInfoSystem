@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-02 18:03:36 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-09 22:33:56
+ * @Last Modified time: 2018-06-18 10:04:40
  * @content: 
  */
 
@@ -25,11 +25,11 @@ export async function LoginCheck(ctx: Koa.Context, next: Function): Promise<any>
 
     let { token } = ctx.header;
     if (!token) {
-        throw new Error("token dose not exist. " + url);
+        return ctx.error(100);
     }
     let loginInfo = await cache.read(token);
     if (!loginInfo) {
-        throw new Error("token has expired. " + url);
+        return ctx.error(101)
     }
 
     return new Promise((resolve, reject) => {

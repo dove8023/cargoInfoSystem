@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 01:09:55
+ * @Last Modified time: 2018-06-18 10:16:57
  * @content what is the content of this file. */
 
 
@@ -26,7 +26,7 @@ export class Order extends ModelBase {
 
     async get(ctx: Context) {
         let id = ctx.params.id;
-        let order = await ModelBase.resourceCheck(id, this.model);
+        let order = await ModelBase.resourceCheck(id, this.model, ctx);
         if (order && order.deletedAt) {
             order = null;
         }
@@ -55,12 +55,12 @@ export class Order extends ModelBase {
         /* params check */
         totalAmount = Number(totalAmount);
         if (!totalAmount) {
-            throw new Error("订单金额不正确");
+            return ctx.error(301, "totalAmount need number");
         }
 
         let customer = await Models.Customer.findById(customerId);
         if (!customer) {
-            throw new Error("Customer 不存在");
+            return ctx.error(301, "该客户未找到");
         }
 
         let addOne = await this.model.create({

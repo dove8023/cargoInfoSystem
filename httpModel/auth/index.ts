@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-02 18:58:05 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 18:18:11
+ * @Last Modified time: 2018-06-18 10:11:48
  * @content: Login and register
  */
 
@@ -29,7 +29,7 @@ export class Auth {
         let { mobile, password, authCode, name } = ctx.request.body;
         mobile = String(mobile);
         if (!mobile || !password || !name) {
-            throw new Error("注册参数不完善");
+            return ctx.error(301);
         }
         /* 检查验证码 */
 
@@ -41,7 +41,7 @@ export class Auth {
         });
 
         if (hasAccount) {
-            throw new Error("mobile is already registed.");
+            return ctx.error(114);
         }
 
         /* create account */
@@ -85,7 +85,7 @@ export class Auth {
         let { mobile, password } = ctx.request.body;
         mobile = String(mobile);
         if (!mobile || !password) {
-            throw new Error("注册参数不完善");
+            return ctx.error(301);
         }
 
         let account = await Models.Account.findOne({
@@ -94,19 +94,11 @@ export class Auth {
             }
         });
         if (!account) {
-            ctx.body = {
-                code: -1,
-                msg: "未注册"
-            }
-            return;
+            return ctx.error(112);
         }
 
         if (account.password != password) {
-            ctx.body = {
-                code: -1,
-                msg: "密码不正确"
-            }
-            return;
+            return ctx.error(113);
         }
 
         let staff = await Models.Staff.findOne({

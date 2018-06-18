@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 23:16:46
+ * @Last Modified time: 2018-06-18 10:14:05
  * @content what is the content of this file. */
 
 
@@ -47,10 +47,10 @@ export class Customer extends ModelBase {
         let { id } = ctx.params;
         let { name, address, mobile, other } = ctx.request.body;
         if (!name) {
-            throw new Error("参数不正确");
+            return ctx.error(301);
         }
 
-        let type = await ModelBase.resourceCheck(id, this.model);
+        let type = await ModelBase.resourceCheck(id, this.model, ctx);
 
         await this.model.update({
             name,
