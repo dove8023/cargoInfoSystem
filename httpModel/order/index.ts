@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 10:16:57
+ * @Last Modified time: 2018-06-18 10:24:28
  * @content what is the content of this file. */
 
 
@@ -41,11 +41,7 @@ export class Order extends ModelBase {
         order = order.toJSON();
         order.goods = goods;
 
-        ctx.body = {
-            code: 0,
-            data: order,
-            msg: "ok"
-        }
+        ctx.success(order);
     }
 
     async post(ctx: Context) {
@@ -80,11 +76,8 @@ export class Order extends ModelBase {
 
         addOne = addOne.toJSON();
         addOne.goods = goods;
-        ctx.body = {
-            code: 0,
-            msg: "ok",
-            data: addOne
-        }
+
+        ctx.success(addOne);
     }
 
     async put(ctx: Context) {

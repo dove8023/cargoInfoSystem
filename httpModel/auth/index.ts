@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-02 18:58:05 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 10:11:48
+ * @Last Modified time: 2018-06-18 10:22:57
  * @content: Login and register
  */
 
@@ -21,7 +21,7 @@ export class Auth {
     @Router("/open/test", "get")
     test(ctx: Context) {
         console.log("what");
-        ctx.body = "test test";
+        ctx.success("test test");
     }
 
     @Router("/open/register", "post")
@@ -69,15 +69,12 @@ export class Auth {
         });
 
         /* 企业注册成功 */
-        ctx.body = {
-            code: 0,
-            msg: "注册成功，请立即登陆",
-            data: {
-                account,
-                company,
-                staff
-            }
-        }
+
+        ctx.success({
+            account,
+            company,
+            staff
+        });
     }
 
     @Router("/open/login", "post")
@@ -116,12 +113,6 @@ export class Auth {
             account, staff, company
         }, 60 * 300);
 
-        ctx.body = {
-            code: 0,
-            msg: "登陆成功",
-            data: {
-                token
-            }
-        }
+        ctx.success(token)
     }
 }

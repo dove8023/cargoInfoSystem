@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-03-21 16:25:11 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-10 10:19:13
+ * @Last Modified time: 2018-06-18 10:23:16
  * @content what is the content of this file. */
 
 import { ModelBase } from "common/model";
@@ -48,16 +48,7 @@ export class Company extends ModelBase {
         //     data: result
         // };
 
-        ctx.body = {
-            code: -1,
-            msg: "not Open"
-        }
     }
 
-    async delete(ctx: Context) {
-        ctx.body = {
-            code: -1,
-            msg: "not Open"
-        }
-    }
+    async delete(ctx: Context) { }
 }

@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-04-10 08:57:56 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 10:13:15
+ * @Last Modified time: 2018-06-18 10:20:56
  * @content what is the content of this file. */
 
 import { Model } from 'sequelize';
@@ -37,11 +37,8 @@ export class ModelBase {
         if (result && result.deletedAt) {
             result = null;
         }
-        ctx.body = {
-            code: 0,
-            data: result,
-            msg: "ok"
-        }
+
+        ctx.success(result);
     }
 
     async find(ctx: Context) {
@@ -64,11 +61,8 @@ export class ModelBase {
             offset: page * limit,
             limit
         });
-        ctx.body = {
-            code: 0,
-            data: result,
-            msg: "ok"
-        }
+
+        ctx.success(result);
     }
 
     async post(ctx: Context) {
@@ -78,23 +72,19 @@ export class ModelBase {
     async put(ctx: Context) {
         let { id } = ctx.params;
         let params = ctx.request.body;
-        await ModelBase.resourceCheck(id, this.model);
+        await ModelBase.resourceCheck(id, this.model, ctx);
         let result = await this.model.update(params, {
             where: {
                 id
             }
         });
 
-        ctx.body = {
-            code: 0,
-            data: result,
-            msg: "ok"
-        }
+        ctx.success(result);
     }
 
     async delete(ctx: Context) {
         let { id } = ctx.params;
-        await ModelBase.resourceCheck(id, this.model);
+        await ModelBase.resourceCheck(id, this.model, ctx);
         let result = await this.model.update({
             deletedAt: moment().format()
         }, {
@@ -103,10 +93,6 @@ export class ModelBase {
                 }
             });
 
-        ctx.body = {
-            code: 0,
-            data: result,
-            msg: "ok"
-        }
+        ctx.success(result);
     }
 }
