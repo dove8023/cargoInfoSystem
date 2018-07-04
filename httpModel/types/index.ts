@@ -70,13 +70,15 @@ export class Types extends ModelBase {
             price
         })
 
-        await this.model.update({
+        type.price = price;
+        type.name = name;
+        let result = await this.model.update({
             hisPrice: type.hisPrice,
             name,
             price
         }, {
                 where: { id }
-            })
+            });
 
         ctx.success(type);
     }
