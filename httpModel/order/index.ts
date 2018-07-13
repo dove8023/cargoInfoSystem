@@ -2,7 +2,7 @@
  * @Author: Mr.He 
  * @Date: 2018-06-10 10:18:57 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-06-18 10:24:28
+ * @Last Modified time: 2018-07-13 20:35:22
  * @content what is the content of this file. */
 
 
@@ -59,7 +59,7 @@ export class Order extends ModelBase {
             return ctx.error(301, "该客户未找到");
         }
 
-        let addOne = await this.model.create({
+        let order = await this.model.create({
             id: uuid.v1(),
             companyId: userInfo.company.id,
             operaterId: userInfo.staff.id,
@@ -70,14 +70,14 @@ export class Order extends ModelBase {
         /* add the goods */
         let goods = await addGoods({
             customerId,
-            orderId: addOne.id,
+            orderId: order.id,
             goods: goodsParams as Goods[]
         });
 
-        addOne = addOne.toJSON();
-        addOne.goods = goods;
+        order = order.toJSON();
+        order.goods = goods;
 
-        ctx.success(addOne);
+        ctx.success(order);
     }
 
     async put(ctx: Context) {

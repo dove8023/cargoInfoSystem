@@ -6,7 +6,9 @@
 		"outDir": "dist/",
 		"noEmitHelpers": true,
 		"importHelpers": true,
-		"sourceMap": true,
+		"sourceMap": false,
+		"inlineSourceMap": true,
+		"inlineSources": true,
 		"declaration": false,
 		"alwaysStrict": true,
 		"experimentalDecorators": true,
@@ -31,15 +33,10 @@
 		"node_modules",
 		"public",
 		"dist",
-		"ionic",
 		"tmp",
 		"*.bak",
 		"*.tar.gz",
-		"http/test",
-		"**/*.test.ts",
-		"model/event/**/*.ts",
-		"cargoNotUse",
-		"api"
+		"**/*.test.ts"
 	],
 	"excludeNotUsing": []
 }
