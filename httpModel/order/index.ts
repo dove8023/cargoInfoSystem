@@ -45,7 +45,7 @@ export class Order extends ModelBase {
     }
 
     async post(ctx: Context) {
-        let { customerId, totalAmount, goodsParams } = ctx.request.body;
+        let { customerId, totalAmount, list } = ctx.request.body;
         let userInfo: UserInfo = getNamespace("session").get("session");
 
         /* params check */
@@ -71,7 +71,7 @@ export class Order extends ModelBase {
         let goods = await addGoods({
             customerId,
             orderId: order.id,
-            goods: goodsParams as Goods[]
+            goods: list as Goods[]
         });
 
         order = order.toJSON();
