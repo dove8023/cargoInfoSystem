@@ -1,11 +1,11 @@
 {
     "appName": "cargoInfo",
     "postgres": {
-        "url": "postgres://postgres@192.168.1.5:15432/cargoInfo",
+        "url": "postgres://postgres@localhost:15432/cargoInfo",
         "debug": false
     },
     "redis": {
-        "url": "redis://192.168.1.5:16379"
+        "url": "redis://localhost:6379"
     },
     "cluster": 4,
     "port": 3000
