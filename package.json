@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "ava",
     "start": "npx nodemon server.js"
   },
   "repository": {
@@ -60,6 +60,8 @@
     "@types/redis": "^2.8.6",
     "@types/sequelize": "^4.27.8",
     "@types/uuid": "^3.4.3",
-    "nodemon": "^1.18.3"
+    "ava": "^0.25.0",
+    "nodemon": "^1.18.3",
+    "superkoa": "^1.0.3"
   }
 }
