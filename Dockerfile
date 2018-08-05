@@ -1,4 +1,5 @@
 FROM node:8.9.4
 WORKDIR /opt/app
-COPY ./dist /opt/app 
+COPY ./dist /opt/app
+COPY ./config /opt/app/config
 CMD npm install --registry=https://registry.npm.taobao.org && node main.js
