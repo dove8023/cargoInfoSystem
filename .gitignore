@@ -6,4 +6,3 @@ log
 tmp
 mytest/
 package-local.json
-config/config.local.json
