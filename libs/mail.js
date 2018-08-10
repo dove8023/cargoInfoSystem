@@ -2,7 +2,7 @@
  * @Author: he@whaleblue.design 
  * @Date: 2018-08-09 22:24:15 
  * @Last Modified by: Mr.He
- * @Last Modified time: 2018-08-10 14:16:11
+ * @Last Modified time: 2018-08-10 19:56:30
  * @content what is the content of this file. */
 
 
@@ -42,7 +42,7 @@ const sendMail = () => {
             // from: 'tik@goodsinfo.cn',
             // from: `<foo@example.com>`,
             from: "service@tik.com          <service@goodsinfo.cn>",
-            to: 'hexisen@tik.com',
+            to: 'hexisen8023@sina.com',
             subject: '欢迎登陆 ',
             html: '<p>您好</p>',
         }, function (err, _) {
