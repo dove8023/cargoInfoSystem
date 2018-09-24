@@ -22,7 +22,9 @@ let errorCode: { [index: string]: any } = {
     "202": "资源不存在",
 
     //3** 参数相关
-    "301": "参数不对"
+    "301": "参数不对",
+
+    // 5** 具体业务
 }
 
 export default errorCode;
