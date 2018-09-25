@@ -22,6 +22,29 @@ export class Customer extends ModelBase {
         super();
     }
 
+    @Router("/customer/search")
+    async search(ctx: Context) {
+        let { keyword, limit = 10 } = ctx.request.query;
+        if (!keyword) {
+            return ctx.error(301);
+        }
+
+        if (limit > 10) {
+            limit = 10;
+        }
+
+        let rows = await this.model.findAll({
+            where: {
+                name: {
+                    $like: `%${keyword}%`
+                }
+            },
+            limit
+        })
+
+        ctx.success(rows || []);
+    }
+
     async post(ctx: Context) {
         let { name, address, mobile, other } = ctx.request.body;
         let userInfo: UserInfo = getNamespace("session").get("session");

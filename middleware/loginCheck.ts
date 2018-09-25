@@ -9,8 +9,6 @@
 import * as Koa from "koa";
 import cache from "common/cache";
 let session = require('continuation-local-storage').createNamespace("session");
-
-
 let allowCrossUrls = ["/open", "/favicon.ico"];
 
 
