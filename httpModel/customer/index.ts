@@ -25,6 +25,8 @@ export class Customer extends ModelBase {
     @Router("/customer/search")
     async search(ctx: Context) {
         let { keyword, limit = 10 } = ctx.request.query;
+        let userInfo: UserInfo = getNamespace("session").get("session");
+
         if (!keyword) {
             return ctx.error(301);
         }
@@ -37,7 +39,9 @@ export class Customer extends ModelBase {
             where: {
                 name: {
                     $like: `%${keyword}%`
-                }
+                },
+                companyId: userInfo.company.id,
+                deletedAt: null
             },
             limit
         })
